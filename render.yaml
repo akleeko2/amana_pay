@@ -25,6 +25,20 @@ services:
         value: production
       - key: JOPACC_MODE
         value: mock
+      # زرع تاجر ثابت بمفتاح ثابت عند كل إقلاع (يحافظ على ثبات المفتاح رغم تصفّر DB)
+      - key: SEED_MERCHANT
+        value: "true"
+      - key: SEED_MERCHANT_EMAIL
+        value: store@novagadgets.jo
+      - key: SEED_MERCHANT_ACCOUNT
+        value: acc_demo_002
+      - key: SEED_MERCHANT_NAME
+        value: Nova Gadgets
+      - key: SEED_MERCHANT_PLAN
+        value: GROWTH
+      # المفتاح الثابت — غيّره من لوحة Render إن أردت. ثابت عبر إعادة التشغيل.
+      - key: SEED_MERCHANT_API_KEY
+        value: ak_demo_novagadgets_2026
       # PORT يوفّره Render تلقائياً؛ الخادم يقرأه من process.env.PORT
 
   # ---------------------------------------------------------------------------
@@ -52,3 +66,11 @@ services:
           property: host
       - key: STORE_ACCOUNT_ID
         value: acc_demo_002
+      - key: STORE_EMAIL
+        value: store@novagadgets.jo
+      # نفس المفتاح الثابت للبوابة (يُنسخ تلقائياً) — يبقى المتجر والداش بورد متزامنين
+      - key: STORE_API_KEY
+        fromService:
+          type: web
+          name: amana-pay-backend
+          envVarKey: SEED_MERCHANT_API_KEY

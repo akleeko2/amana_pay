@@ -25,7 +25,7 @@ function genApiSecret() {
  * تسجيل تاجر جديد.
  * @param {object} p - { name, name_ar?, email, lookupValue, lookupSchema='accountId'|'IBAN'|'CLIQ', nid?, webhook_url? }
  */
-async function register({ name, name_ar, email, lookupValue, lookupSchema = 'accountId', nid = '0000', webhook_url, plan }) {
+async function register({ name, name_ar, email, lookupValue, lookupSchema = 'accountId', nid = '0000', webhook_url, plan, fixedApiKey }) {
   if (!name || !email || !lookupValue) {
     const e = new Error('الاسم والبريد ومعرّف الحساب مطلوبة');
     e.status = 400;
@@ -63,7 +63,8 @@ async function register({ name, name_ar, email, lookupValue, lookupSchema = 'acc
   });
 
   const id = crypto.randomUUID();
-  const apiKey = genApiKey();
+  // في وضع mock نسمح بمفتاح ثابت (لثبات المفتاح عبر إعادة التشغيل على السحابة)
+  const apiKey = (config.jopacc.mode === 'mock' && fixedApiKey) ? fixedApiKey : genApiKey();
   const row = {
     id,
     name,
@@ -113,4 +114,28 @@ function publicView(m) {
   return safe;
 }
 
-module.exports = { register, verify, publicView, genApiKey, genApiSecret };
+/**
+ * زرع تاجر ثابت بمفتاح ثابت عند الإقلاع (للنشر السحابي بقاعدة بيانات مؤقتة).
+ * يُفعَّل عبر SEED_MERCHANT=true. المفتاح يبقى ثابتاً من SEED_MERCHANT_API_KEY،
+ * فلا يتغيّر مع كل restart، ويظل الداش بورد والمتجر شغّالين بنفس المفتاح.
+ */
+async function ensureSeedMerchant() {
+  const env = process.env;
+  if (String(env.SEED_MERCHANT || '').toLowerCase() !== 'true') return null;
+
+  const email = env.SEED_MERCHANT_EMAIL || 'store@novagadgets.jo';
+  const existing = db.merchants.findByEmail(email);
+  if (existing) return existing; // موجود مسبقاً (نفس المفتاح الثابت)
+
+  return register({
+    name: env.SEED_MERCHANT_NAME || 'Nova Gadgets',
+    name_ar: env.SEED_MERCHANT_NAME_AR || 'نوفا غادجتس',
+    email,
+    lookupValue: env.SEED_MERCHANT_ACCOUNT || 'acc_demo_002',
+    lookupSchema: 'accountId',
+    plan: env.SEED_MERCHANT_PLAN || 'GROWTH',
+    fixedApiKey: env.SEED_MERCHANT_API_KEY || undefined,
+  });
+}
+
+module.exports = { register, verify, publicView, genApiKey, genApiSecret, ensureSeedMerchant };

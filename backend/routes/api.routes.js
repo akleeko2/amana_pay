@@ -28,8 +28,8 @@ const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).cat
 router.post(
   '/merchants/register',
   wrap(async (req, res) => {
-    const { name, name_ar, email, lookupValue, lookupSchema, nid, webhook_url, plan } = req.body || {};
-    const merchant = await merchantService.register({ name, name_ar, email, lookupValue, lookupSchema, nid, webhook_url, plan });
+    const { name, name_ar, email, lookupValue, lookupSchema, nid, webhook_url, plan, apiKey } = req.body || {};
+    const merchant = await merchantService.register({ name, name_ar, email, lookupValue, lookupSchema, nid, webhook_url, plan, fixedApiKey: apiKey });
     // نُرجع api_key مرة واحدة فقط عند التسجيل
     res.status(201).json({
       merchant: merchantService.publicView(merchant),

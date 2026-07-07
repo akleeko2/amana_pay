@@ -40,8 +40,13 @@ async function request(method, path, { body, apiKey, allowFail = false } = {}) {
  * نتعامل مع الخطأ بلطف ونطلب من المشغّل تزويد مفتاح API عبر متغيّر بيئة بدلاً من ذلك.
  */
 async function registerStore() {
+  // نمرّر المفتاح الثابت (إن وُجد) ليُنشَأ التاجر بنفس المفتاح دائماً — يثبّت المفتاح
+  // عبر إعادة التشغيل ويغلق سباق الإقلاع بين المتجر والبوابة.
+  const body = { ...config.merchant };
+  if (process.env.STORE_API_KEY) body.apiKey = process.env.STORE_API_KEY;
+
   const { status, data } = await request('POST', '/merchants/register', {
-    body: config.merchant,
+    body,
     allowFail: true,
   });
 

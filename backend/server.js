@@ -103,7 +103,22 @@ app.use(errorHandler);
 const httpServer = http.createServer(app);
 realtime.attach(httpServer);
 
+async function bootSeed() {
+  try {
+    const merchantService = require('./services/merchant.service');
+    const seeded = await merchantService.ensureSeedMerchant();
+    if (seeded) {
+      // eslint-disable-next-line no-console
+      console.log(`  → Seeded merchant: ${seeded.name} | key: ${seeded.api_key}`);
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn('  ! bootSeed skipped:', e.message);
+  }
+}
+
 function start() {
+  bootSeed();
   httpServer.listen(config.server.port, config.server.host, () => {
     const url = `http://localhost:${config.server.port}`;
     // eslint-disable-next-line no-console
