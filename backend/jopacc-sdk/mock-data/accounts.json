@@ -1,0 +1,97 @@
+[
+  {
+    "accountId": "acc_demo_001",
+    "phone": "0790000001",
+    "mainRoute": { "address": "JO94CBJO0010000000000131000302", "schema": "IBAN" },
+    "routings": [
+      { "address": "JO94CBJO0010000000000131000302", "schema": "IBAN" },
+      { "address": "DOWNTOWN", "schema": "CLIQ" }
+    ],
+    "accountType": { "code": "CHK.BUS", "name": "Business Checking Account" },
+    "accountHolderType": "corporate",
+    "accountStatus": "active",
+    "lockedForCredit": false,
+    "lockedForDebit": false,
+    "accountCurrency": "JOD",
+    "owner": { "enName": "Downtown Computers", "arName": "داون تاون للحاسوب" },
+    "institution": { "bic": "ARABJOAX" },
+    "balance": { "available": 1500.0, "current": 1500.0 },
+    "role": "merchant"
+  },
+  {
+    "accountId": "acc_demo_002",
+    "phone": "0790000002",
+    "mainRoute": { "address": "JO50HBHO0022000000000445566778", "schema": "IBAN" },
+    "routings": [
+      { "address": "JO50HBHO0022000000000445566778", "schema": "IBAN" },
+      { "address": "NOVAGADGETS", "schema": "CLIQ" }
+    ],
+    "accountType": { "code": "CHK.BUS", "name": "Business Checking Account" },
+    "accountHolderType": "corporate",
+    "accountStatus": "active",
+    "lockedForCredit": false,
+    "lockedForDebit": false,
+    "accountCurrency": "JOD",
+    "owner": { "enName": "Nova Gadgets", "arName": "نوفا غادجتس" },
+    "institution": { "bic": "HBHOJOAX" },
+    "balance": { "available": 3200.0, "current": 3200.0 },
+    "role": "merchant"
+  },
+  {
+    "accountId": "acc_cust_001",
+    "phone": "0791234567",
+    "mainRoute": { "address": "JO11ARAB1234000000000123456789", "schema": "IBAN" },
+    "routings": [
+      { "address": "JO11ARAB1234000000000123456789", "schema": "IBAN" },
+      { "address": "0791234567", "schema": "CLIQ" }
+    ],
+    "accountType": { "code": "CHK.PRS", "name": "Personal Checking Account" },
+    "accountHolderType": "individual",
+    "accountStatus": "active",
+    "lockedForCredit": false,
+    "lockedForDebit": false,
+    "accountCurrency": "JOD",
+    "owner": { "enName": "Ahmad Mohammad Al-Saleh", "arName": "أحمد محمد الصالح" },
+    "institution": { "bic": "ARABJOAX" },
+    "balance": { "available": 250.5, "current": 250.5 },
+    "role": "customer"
+  },
+  {
+    "accountId": "acc_cust_002",
+    "phone": "0797654321",
+    "mainRoute": { "address": "JO22JONB5678000000000987654321", "schema": "IBAN" },
+    "routings": [
+      { "address": "JO22JONB5678000000000987654321", "schema": "IBAN" },
+      { "address": "0797654321", "schema": "CLIQ" }
+    ],
+    "accountType": { "code": "CHK.PRS", "name": "Personal Checking Account" },
+    "accountHolderType": "individual",
+    "accountStatus": "active",
+    "lockedForCredit": false,
+    "lockedForDebit": false,
+    "accountCurrency": "JOD",
+    "owner": { "enName": "Lina Khaled Odeh", "arName": "لينا خالد عوده" },
+    "institution": { "bic": "JONBJOAX" },
+    "balance": { "available": 8.75, "current": 8.75 },
+    "role": "customer"
+  },
+  {
+    "accountId": "acc_cust_003",
+    "phone": "0798887766",
+    "mainRoute": { "address": "JO33UBSI9012000000000456789012", "schema": "IBAN" },
+    "routings": [
+      { "address": "JO33UBSI9012000000000456789012", "schema": "IBAN" },
+      { "address": "lina.shop", "schema": "CLIQ" }
+    ],
+    "accountType": { "code": "CHK.PRS", "name": "Personal Checking Account" },
+    "accountHolderType": "individual",
+    "accountStatus": "active",
+    "lockedForCredit": false,
+    "lockedForDebit": false,
+    "accountCurrency": "JOD",
+    "owner": { "enName": "Omar Yousef Nasser", "arName": "عمر يوسف ناصر" },
+    "institution": { "bic": "ETIHJOAX" },
+    "balance": { "available": 1200.0, "current": 1200.0 },
+    "role": "customer"
+  }
+]

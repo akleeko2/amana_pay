@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova Gadgets — حالة الطلب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body dir="rtl">
+
+  <header class="site-head">
+    <div class="wrap head-row">
+      <a href="/" class="brand"><span class="mark">NG</span> Nova Gadgets</a>
+      <nav class="nav-links">
+        <a href="/">الرئيسية</a>
+        <a href="/#grid">المنتجات</a>
+      </nav>
+      <div class="head-actions">
+        <button class="cart-btn" id="cart-btn" type="button">
+          <span class="icon" data-icon="cart" data-icon-size="18"></span>
+          السلة
+          <span class="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="order-wrap" id="order-root">
+      <div class="order-icon pending"><span class="icon" data-icon="info" data-icon-size="30"></span></div>
+      <h2>جارٍ التحقق من حالة الطلب…</h2>
+      <p class="muted">يرجى الانتظار لحظات.</p>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">© 2026 Nova Gadgets — متجر تجريبي متكامل مع بوابة الدفع Amana Pay (CliQ)</div>
+  </footer>
+
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="drawer" id="cart-drawer">
+    <div class="drawer-head">
+      <h3>سلة التسوّق</h3>
+      <button class="icon-btn" id="drawer-close" type="button" aria-label="إغلاق">
+        <span class="icon" data-icon="x" data-icon-size="20"></span>
+      </button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+    <div class="drawer-foot hidden" id="drawer-foot">
+      <div class="subtotal-row"><span>الإجمالي</span><span class="num" id="cart-subtotal">0.000 JOD</span></div>
+      <button class="btn btn-brand btn-block" id="checkout-btn" type="button">إتمام الشراء</button>
+    </div>
+  </aside>
+
+  <script src="./icons.js"></script>
+  <script src="./app.js"></script>
+  <script src="./order.js"></script>
+</body>
+</html>

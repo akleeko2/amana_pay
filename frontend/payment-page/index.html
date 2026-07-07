@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amana Pay — صفحة الدفع</title>
+  <link rel="icon" type="image/png" href="../shared/favicon-64.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shared/theme.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body dir="rtl">
+  <main class="pp-wrap">
+    <header class="pp-top">
+      <div class="ap-brand"><span class="ap-logo">AP</span><b data-i18n="brand">أمانة باي</b></div>
+      <span class="lang-toggle" id="langToggle">EN</span>
+    </header>
+
+    <section class="pp-card glass reveal d1" id="card">
+      <!-- تحميل -->
+      <div id="state-loading" class="state">
+        <div class="spinner"></div>
+        <p class="muted" data-i18n="loading">جارِ تحميل الطلب…</p>
+      </div>
+
+      <!-- خطأ -->
+      <div id="state-error" class="state hidden">
+        <div class="status-ico bad"><span class="icon" data-icon="info"></span></div>
+        <h2 data-i18n="errorTitle">تعذّر تحميل الطلب</h2>
+        <p id="error-msg" class="muted"></p>
+      </div>
+
+      <!-- معلّق -->
+      <div id="state-pending" class="state hidden">
+        <div class="merchant-row">
+          <div class="merchant-avatar" id="merchant-initial">D</div>
+          <div class="m-meta">
+            <div class="merchant-name" id="merchant-name">—</div>
+            <div class="muted sm" id="merchant-bank">—</div>
+          </div>
+          <span class="badge EXPRESS" id="tier-pill" data-i18n="tierExpress">سريع</span>
+        </div>
+
+        <div class="amount-hero">
+          <div class="muted sm" data-i18n="amountToPay">المبلغ المطلوب دفعه</div>
+          <div class="amount num" id="amount">0.000 <span class="cur">JOD</span></div>
+          <div class="muted tiny" id="original-note"></div>
+        </div>
+
+        <!-- إدخال الهاتف -->
+        <div id="identify-block" class="identify">
+          <label class="label" data-i18n="enterPhone">أدخل رقم هاتفك للمتابعة</label>
+          <div class="phone-row">
+            <input id="phone-input" class="input num" type="tel" inputmode="numeric" placeholder="07XXXXXXXX" maxlength="10" />
+            <button id="identify-btn" class="btn btn-primary" type="button" data-i18n="continue">متابعة</button>
+          </div>
+          <p id="identify-hint" class="muted tiny" style="margin-top:8px"></p>
+        </div>
+
+        <!-- التعليمات -->
+        <div id="instructions-block" class="instructions hidden">
+          <p class="instr-title" data-i18n="payVia">حوّل عبر CliQ إلى:</p>
+
+          <div class="copy-field">
+            <div class="cf-meta"><span class="cf-label" data-i18n="cliqAlias">اسم CliQ</span><span class="cf-value" id="cliq-alias">—</span></div>
+            <button class="copy-btn" data-copy="cliq-alias" type="button" aria-label="نسخ"><span class="icon" data-icon="copy"></span></button>
+          </div>
+
+          <div class="copy-field highlight">
+            <div class="cf-meta"><span class="cf-label" data-i18n="exactAmount">المبلغ بالضبط</span><span class="cf-value num"><span id="amount-copy">—</span> <span class="cur">JOD</span></span></div>
+            <button class="copy-btn" data-copy="amount-copy" type="button" aria-label="نسخ"><span class="icon" data-icon="copy"></span></button>
+          </div>
+
+          <div class="copy-field">
+            <div class="cf-meta"><span class="cf-label" data-i18n="reference">الرقم المرجعي</span><span class="cf-value num" id="reference">—</span></div>
+            <button class="copy-btn" data-copy="reference" type="button" aria-label="نسخ"><span class="icon" data-icon="copy"></span></button>
+          </div>
+
+          <div class="warn-card">
+            <div class="warn-head"><span class="icon" data-icon="info"></span><span data-i18n="warnTitle">تعليمات إلزامية لإتمام الدفع — اقرأها بعناية</span></div>
+            <ul class="warn-list">
+              <li><span class="wn">1</span><span data-i18n="warnExact">حوّل المبلغ بالضبط حتى آخر فلس.</span></li>
+              <li><span class="wn">2</span><span data-i18n="warnSender">ادفع من حسابك أنت بنفس الرقم.</span></li>
+              <li><span class="wn">3</span><span data-i18n="warnTime">أتمم الدفع قبل انتهاء المؤقّت.</span></li>
+              <li><span class="wn">4</span><span data-i18n="warnStay">لا تغلق الصفحة حتى يظهر «تم الدفع».</span></li>
+              <li><span class="wn">5</span><span data-i18n="warnRef">أضف الرقم المرجعي في الملاحظات إن أمكن.</span></li>
+            </ul>
+          </div>
+
+          <div class="timer-row">
+            <span class="muted sm row"><span class="icon" data-icon="clock"></span> <span data-i18n="expiresIn">ينتهي خلال</span></span>
+            <span id="timer" class="timer num">--:--</span>
+          </div>
+
+          <button id="simulate-btn" class="btn btn-soft btn-block" type="button"><span class="icon" data-icon="bolt"></span> <span data-i18n="simulate">محاكاة الدفع عبر CliQ</span></button>
+        </div>
+      </div>
+
+      <!-- تحقق -->
+      <div id="state-processing" class="state hidden">
+        <div class="pulse-ring"><div class="spinner"></div></div>
+        <h2 data-i18n="verifying">جارِ التحقق من الدفع…</h2>
+        <p class="muted" data-i18n="verifyingSub">نراقب حساب التاجر عبر Open Finance</p>
+      </div>
+
+      <!-- تأكيد -->
+      <div id="state-confirmed" class="state hidden">
+        <div class="check-anim"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none"/><path fill="none" d="M14 27l8 8 16-16"/></svg></div>
+        <h2 class="success-title" data-i18n="paid">تم الدفع بنجاح!</h2>
+        <p class="muted" id="confirmed-detail"></p>
+        <div class="match-info" id="match-info"></div>
+        <a id="return-store-btn" class="btn btn-primary btn-block hidden" href="#" style="margin-top:14px">
+          <span class="icon" data-icon="arrowLeft"></span> <span data-i18n="backToStore">عودة للمتجر</span>
+        </a>
+      </div>
+
+      <!-- منتهي -->
+      <div id="state-expired" class="state hidden">
+        <div class="status-ico warn"><span class="icon" data-icon="clock"></span></div>
+        <h2 data-i18n="expired">انتهت صلاحية الطلب</h2>
+        <p class="muted" data-i18n="expiredSub">انتهى الوقت المتاح لإتمام الدفع.</p>
+      </div>
+    </section>
+
+    <footer class="pp-foot">
+      <span class="row"><span class="icon" data-icon="shieldCheck"></span> <span data-i18n="securedBy">مؤمّن عبر Open Finance — JoPACC</span></span>
+      <span class="sep">•</span>
+      <span data-i18n="cbj">مرخّص من البنك المركزي الأردني</span>
+    </footer>
+  </main>
+
+  <!-- نافذة الموافقة -->
+  <div id="consent-modal" class="modal-overlay hidden">
+    <div class="modal glass">
+      <div class="modal-bank"><span class="icon-box"><span class="icon" data-icon="bank"></span></span><span id="consent-bank-name">البنك</span></div>
+      <p class="modal-text"><strong>أمانة باي</strong> <span data-i18n="requestsAccess">تطلب الوصول إلى:</span></p>
+      <ul class="perm-list">
+        <li><span class="icon" data-icon="user"></span><span data-i18n="permAccount">معلومات الحساب</span></li>
+        <li><span class="icon" data-icon="wallet"></span><span data-i18n="permBalance">الأرصدة</span></li>
+        <li><span class="icon" data-icon="swap"></span><span data-i18n="permTx">المعاملات</span></li>
+      </ul>
+      <p class="muted sm" data-i18n="validity90">مدة الصلاحية: 90 يوماً — تُعاد للاستخدام عبر كل المتاجر.</p>
+      <div class="modal-actions">
+        <button id="consent-deny" class="btn btn-ghost" type="button" data-i18n="deny">رفض</button>
+        <button id="consent-approve" class="btn btn-primary" type="button" data-i18n="approve">موافقة</button>
+      </div>
+      <p class="muted tiny center" data-i18n="cbjConsent">هذه الخدمة مرخّصة من البنك المركزي الأردني وتتوافق مع معايير Open Finance.</p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="../shared/icons.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

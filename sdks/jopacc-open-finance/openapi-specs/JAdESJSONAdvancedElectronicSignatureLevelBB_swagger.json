@@ -1,0 +1,283 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This service empowers the signing and verifying of JSON data structures, conforming to the advanced JAdES Basic-Baseline level standards for robust digital signatures.\n\n#### **JAdES, or JSON Advanced Electronic Signatures**, is a set of specifications defined by the European Telecommunications Standards Institute (ETSI). It extends the JSON Web Signatures (JWS) specified in the IETF RFC 7515 to create a framework for electronic signatures in various transactional scenarios, including interactions between individuals, companies, and governmental bodies.\n\n#### **JAdES Signatures and Relation to JWS**\n1. **Additional JSON Header Parameters:** \n   \n      JAdES introduces an additional set of JSON header parameters that are incorporated into the JOSE (JSON Object Signing and Encryption) Header. These parameters provide specific information and metadata related to the electronic signature.\n      \n1. **Incorporation Mechanisms:** \n   \n      JAdES specifies mechanisms for incorporating the JSON components into JSON Web Signatures. This involves defining how the signature is generated and what components are included to ensure the integrity, authenticity, and long-term validity of the signature.\n\n1. **Multiple Levels of Baseline Signatures:** \n   \n      JAdES defines four levels of baseline signatures, each addressing incremental requirements to maintain the long-term validity of the signatures.\n\n#### **Comparison of JAdES Baseline Signature Levels**\n\n![image](https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/doc/images/signature-classes.jpg)\n\n1. **B-B (Basic-Baseline) Level**\n\n    Suppose you are signing a document using the B-B level. The signature would include certain header parameters that are signed, and some components that are left unsigned but included within the etsiU parameter. This basic level ensures that the signature includes essential information for verification but may not explicitly address long-term considerations.\n\n    -\t**Details**:\n        -\tThis is the most basic level of JAdES signature.\n        -\tIt provides a basic level of assurance regarding the integrity and origin of the signed data.\n        -\tThe signature is typically based on a simple digital signature algorithm and may not include a timestamp.\n\n    -\t**Purpose**: Provides requirements for the incorporation of signed header parameters and some unsigned components within the etsiU unsigned header parameter during signature generation.\n\n    -\t**Use Case**: Suitable for scenarios where basic signature elements need to be included, and there is no immediate need for additional features like trusted tokens or long-term validation material.\n\n    -\t**Scenario**:\n        -\t**Description**: Imagine a scenario where a company regularly signs contracts and invoices using JAdES signatures at the B-B level. The focus here is on the efficiency of the signing process and the inclusion of essential information.\n\n        -\t**Example**: A business uses JAdES signatures at the B-B level to sign its invoices. The signature includes signed header parameters that authenticate the signer and some additional information. The unsigned components within the etsiU parameter might include non-critical metadata that is helpful for processing the invoice but is not crucial for long-term verification.\n\n1. **B-T (Basic-Timestamped) Level**\n\n    The B-T level is designed for the generation and inclusion, for an existing signature, of a trusted token that proves the signature itself existed at a certain date and time.\n\n    -\t**Details**:\n        -\tAt this level, the signature includes a timestamp.\n        - The timestamp provides information about when the signature was created, adding an additional layer of assurance regarding the signature's validity over time.\n\n    -\t**Purpose**: Specifies requirements for the generation and inclusion of a trusted token proving the existence of the signature at a specific date and time.\n\n    -\t**Use Case**: Useful when there is a need to prove the existence of the signature at a certain point in time. This can be crucial for auditing and legal purposes.\n\n    -\t**Scenario**:\n        -\t**Description**: Consider a scenario where an organization wants to enhance the trustworthiness of existing signatures by proving their existence at specific dates and times. This scenario aligns with the B-T (Baseline-Trusted) level.\n\n        -\t**Example**: A company has been digitally signing important contracts over the years using JAdES signatures at the B-B level. To enhance the trust in these signatures, the organization decides to apply B-T level requirements. Trusted tokens, such as timestamps, are generated and added to the existing signatures. These timestamps serve as evidence that the signatures existed at specific dates and times, bolstering their temporal validity.\n\n1. **B-LT (Basic-Long Term) Level**\n\n    In B-LT, the signature document itself contains all the necessary information for validating the signature. This approach ensures that, over the long term, the validation material remains accessible, allowing verification of the signature's authenticity and integrity.\n\n    -\t**Details**:\n        -\tThis level is designed to ensure the long-term validity and preservation of the signature.\n        - It typically includes additional features to address issues that may arise over an extended period, such as changes in cryptographic algorithms or key expiration.\n        - B-LT signatures are suitable for scenarios where the signed documents need to be archived and verified over many years.\n\n    -\t**Purpose**: Focuses on incorporating all material necessary for validating the signature in the signature document, aiming to ensure long-term availability of validation material.\n\n    -\t**Use Case**: Suitable for scenarios where long-term availability of validation material is essential, ensuring that the signature can be verified even after an extended period.\n\n    -\t**Scenario**:\n        -\t**Description**: Consider a scenario where an organization, for legal or archival reasons, wants to ensure that all the necessary material for validating a signature is encapsulated within the signature document. This aligns with the B-LT (Baseline-Long-Term) level.\n\n        -\t**Example**: A government agency is responsible for signing and archiving important legal documents for an extended period. To address long-term availability concerns, the agency opts for JAdES signatures at the B-LT level. In each signature, all the material required for validating the signature is embedded within the signature document itself. This includes certificates, references, and other validation-related information. This approach ensures that the validation material remains intact and accessible over the long term.\n\n1. **B-LTA (Basic-Long Term Archive) Level**\n\n    B-LTA introduces electronic timestamps, which are critical for ensuring the long-term validity and integrity of the signature. These timestamps enable the verification of the signature's validity even many years after its creation, contributing to the overall trustworthiness of the electronic signature.\n\n    -\t**Details**:\n        -\tThis level builds upon B-LT by including an archive timestamp.\n        - The archive timestamp provides an additional layer of timestamping, helping to prove the existence of the signature at a specific point in time and enhancing the long-term validity of the signature.\n\n    -\t**Purpose**: Requires the incorporation of electronic timestamps, allowing validation of the signature long after its generation. Aims to ensure both long-term availability and integrity of the validation material.\n\n    -\t**Use Case**: Ideal for situations where not only long-term availability but also the integrity of validation material is critical. This level is suitable for high-security environments with stringent long-term validation requirements.\n\n    -\t**Scenario**:\n        -\t**Description**: Now, consider a scenario where an organization, due to regulatory requirements or legal obligations, must ensure the long-term validity and integrity of its signed documents. In this case, the organization opts for JAdES signatures at the B-LTA level.\n\n        -\t**Example**: A government agency is required to sign and archive critical legal documents for an extended period. The agency uses JAdES signatures at the B-LTA level, incorporating electronic timestamps. Each signature includes not only the necessary signed and unsigned components but also electronic timestamps that cryptographically prove the signature's existence at specific points in time.\n\nSome useful links:\n- [About JoPACC](https://jopacc.com)\n- [JWS RFC 7515](https://datatracker.ietf.org/doc/html/rfc7515)\n- [JAdES Digital Signatures](https://www.etsi.org/deliver/etsi_ts/119100_119199/11918201/01.01.01_60/ts_11918201v010101p.pdf)\n- [Procedures for Creation and Validation of AdES Digital Signatures](https://www.etsi.org/deliver/etsi_en/319100_319199/31910201/01.01.00_30/en_31910201v010100v.pdf)\n- [Open Banking Europe: JSON Web Signature Profile for Open Banking](https://www.openbankingeurope.eu/media/2096/obe-json-web-signature-profile-for-open-banking.pdf)\n",
+    "version" : "v0.4.3",
+    "title" : "JAdES - JSON Advanced Electronic Signature Level B-B"
+  },
+  "host" : "jpcjofsdev.apigw-az-eu.webmethods.io",
+  "basePath" : "/gateway/JAdES - JSON Advanced Electronic Signature Level B-B/v0.4.3",
+  "tags" : [ {
+    "name" : "JAdES B-B",
+    "description" : "JSON Advanced Electronic Signature Level B-B"
+  } ],
+  "schemes" : [ "https" ],
+  "security" : [ {
+    "apiKey" : [ ]
+  }, {
+    "httpBasicAuth" : [ ]
+  } ],
+  "paths" : {
+    "/verifyJAdESBB" : {
+      "post" : {
+        "tags" : [ "JAdES B-B" ],
+        "summary" : "verify a JAdES B-B Signature",
+        "description" : "Verify a JAdES B-B signed by JOPACC, by using JOPACC Public Key.",
+        "operationId" : "verifyJAdESBB",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/verifyJAdESBB"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "successful",
+            "examples" : {
+              "application/json" : "{\"signature\":\"valid\",\"digest\":\"valid\",\"status\":\"success\"}"
+            },
+            "schema" : {
+              "$ref" : "#/definitions/JAdESBBVerificationResponse"
+            }
+          }
+        }
+      }
+    },
+    "/generateJAdESBB" : {
+      "post" : {
+        "tags" : [ "JAdES B-B" ],
+        "summary" : "geneate a JAdES B-B Signature",
+        "description" : "Sign a JSON object using JAdES B-B (JSON Advanced Electronic Signature), the signing algorithm used is \"RS256\" with JOPACC Private Key. The response will give the full HTTP request with the signature provided in x-jws-signature Header.",
+        "operationId" : "generateJAdESBB",
+        "produces" : [ "text/html", "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/generateJAdESBB"
+          },
+          "x-examples" : {
+            "application/json" : "{\"headers\":{\"x-interactions-id\":\"interactionsId123\",\"x-idempotency-key\":\"idempotencyKey123\",\"x-financial-id\":\"financialId123\",\"x-auth-date\":\"Thu, 26 Oct 2023 10:26:00 GMT\",\"x-customer-id\":\"customerId123\",\"x-customer-ip-address\":\"192.168.1.01\",\"x-customer-user-agent\":\"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0\",\"url-path\":\"/verifyJAdESBB\",\"method\":\"post\"},\"body\":{\"name\":\"saeed\",\"age\":30,\"company\":\"jopacc\"}}"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "successful",
+            "examples" : {
+              "application/json" : "{\"example\":\"(request-target): post /verifyJAdESBB \\n host: localhost:4000 \\n x-interactions-id: interactionsId123 \\n x-idempotency-key: idempotencyKey123 \\n x-financial-id: financialId123 \\n x-auth-date: Thu, 26 Oct 2023 10:26:00 GMT \\n x-customer-id: customerId123 \\n x-customer-ip-address: 192.168.1.01 \\n x-customer-user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0 \\n digest: SHA-256=N6MXYiv7FvxLATkRHtT//OH2PzSBXCrE0nzDgK6icog= \\n x-jws-signature: eyJiNjQiOmZhbHNlLCJ4NXQjUzI1NiI6IlJSTVVBN2Z0MkNuaFVWWEo4OWVCQW9ZRW4zRjcyZlJaZDVQc2hacmJVOG8iLCJjcml0IjpbInNpZ1QiLCJzaWdEIiwiYjY0Il0sInNpZ1QiOiIyMDI0LTAyLTE0VDEyOjE4OjQxWiIsInNpZ0QiOnsicGFycyI6WyIocmVxdWVzdC10YXJnZXQpIiwiaG9zdCIsIngtaW50ZXJhY3Rpb25zLWlkIiwieC1pZGVtcG90ZW5jeS1rZXkiLCJ4LWZpbmFuY2lhbC1pZCIsIngtYXV0aC1kYXRlIiwieC1jdXN0b21lci1pZCIsIngtY3VzdG9tZXItaXAtYWRkcmVzcyIsIngtY3VzdG9tZXItdXNlci1hZ2VudCIsImRpZ2VzdCJdLCJtSWQiOiJodHRwOi8vdXJpLmV0c2kub3JnLzE5MTgyL0h0dHBIZWFkZXJzIn0sImFsZyI6IlJTMjU2In0..lX6seir_gTuEZMObwI_XGIGonGNeO02ITGQAnzjWiIxHZ4-KXAujvy2x_NpDbXV2yiCK5lBmf8oHBiOBwZOoSx7DB1zHEpZcM4fxepk00iTJKeOoXlhblPz1M62nB8CYBB1JujSps9o97cVkkQN4FnfyXoDdXBpQ-Dsc4L90algPHMoHUiZNsOVNajOzrm-Pg-cAGFfAyPoBJLGpXi4TqjZul4gLbOB7d68VxEADm63SgZNEHdV8I9_qkkIFS8kLDgNG0Wq5dHg1dh21cknN5EXUj2p83X6_vQQMiJKT4wKaFV0fbY88mx4_hvxnqYQ_NhzLSFA5vm0ZYuJI7G6lgg\"}"
+            },
+            "schema" : {
+              "type" : "object"
+            }
+          }
+        }
+      }
+    },
+    "/publicKey" : {
+      "get" : {
+        "tags" : [ "JAdES B-B" ],
+        "summary" : "get a public key",
+        "description" : "Retrieve JOPACC testing Public Key used in these methods.",
+        "operationId" : "getPublicKey",
+        "consumes" : [ ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful",
+            "examples" : {
+              "application/json" : "{\"certSerialNumber\":\"30C4188DF48C4C4A7B9E34B52CF4E4623970137A\",\"certFingerprint\":\"53:54:7E:DA:7F:1D:BB:AF:16:E3:B6:D0:27:10:D8:4C:46:A1:24:83\",\"publicKey\":\"LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUExSDN0MUdiZlhTS3JRVVNwMjhXSAp1OHp0NC9DOC80ZkVPOVFVbDNMM1dub0xTUjNrM1paTVMrSjE5alQxR0c0dkFSaFZKSmliYWE0MlNhbk1BbUdlCkFzZnhISFlONVVaalVlbk95TmljNVZDemw3aGtSVjhGN0c5K2d2ekJmZEZVUGpudmxFenV6R2ZaY1FMUVJPQVkKajIvRHozYWd2QmZod0hCK3ZGNFN1RGFiMWRlc09IQk4wSXBlUjNhOVBNSmNRUkNxZUdJNzlWdElXTENmV0xMTwphT29HeTZjd3EvS2g2NnBKTlo2M2RtTzZKREllWHFJVHZNU2pnUUZDMURjSGs0ZkpWR3N5MUNxQUQ2WE9XcDNJCkx6R2pJc2RJTzNjYWU0d2dRRkp1M0Z4OHA1UnlEZm5PTk9xQmExVDdkOWVwQVhMb2piTFROYWZsSm10cjh6WnIKc1FJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==\"}"
+            },
+            "schema" : {
+              "$ref" : "#/definitions/publicKey"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "httpBasicAuth" : {
+      "type" : "basic"
+    },
+    "apiKey" : {
+      "type" : "apiKey",
+      "name" : "x-Gateway-APIKey",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "JAdESBBVerificationResponse" : {
+      "type" : "object",
+      "properties" : {
+        "digest" : {
+          "type" : "string",
+          "example" : "valid"
+        },
+        "signature" : {
+          "type" : "string",
+          "example" : "valid"
+        },
+        "status" : {
+          "type" : "string",
+          "example" : "success"
+        }
+      }
+    },
+    "publicKey" : {
+      "type" : "object",
+      "properties" : {
+        "certFingerprint" : {
+          "type" : "string",
+          "example" : "53:54:7E:DA:7F:1D:BB:AF:16:E3:B6:D0:27:10:D8:4C:46:A1:24:83"
+        },
+        "certSerialNumber" : {
+          "type" : "string",
+          "example" : "30C4188DF48C4C4A7B9E34B52CF4E4623970137A"
+        },
+        "publicKey" : {
+          "type" : "string",
+          "example" : "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUExSDN0MUdiZlhTS3JRVVNwMjhXSAp1OHp0NC9DOC80ZkVPOVFVbDNMM1dub0xTUjNrM1paTVMrSjE5alQxR0c0dkFSaFZKSmliYWE0MlNhbk1BbUdlCkFzZnhISFlONVVaalVlbk95TmljNVZDemw3aGtSVjhGN0c5K2d2ekJmZEZVUGpudmxFenV6R2ZaY1FMUVJPQVkKajIvRHozYWd2QmZod0hCK3ZGNFN1RGFiMWRlc09IQk4wSXBlUjNhOVBNSmNRUkNxZUdJNzlWdElXTENmV0xMTwphT29HeTZjd3EvS2g2NnBKTlo2M2RtTzZKREllWHFJVHZNU2pnUUZDMURjSGs0ZkpWR3N5MUNxQUQ2WE9XcDNJCkx6R2pJc2RJTzNjYWU0d2dRRkp1M0Z4OHA1UnlEZm5PTk9xQmExVDdkOWVwQVhMb2piTFROYWZsSm10cjh6WnIKc1FJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg=="
+        }
+      }
+    },
+    "verifyJAdESBB" : {
+      "type" : "object",
+      "properties" : {
+        "body" : {
+          "type" : "object",
+          "properties" : {
+            "name" : {
+              "type" : "string",
+              "example" : "saeed"
+            },
+            "company" : {
+              "type" : "string",
+              "example" : "jopacc"
+            },
+            "age" : {
+              "type" : "number",
+              "example" : 30.0
+            }
+          }
+        },
+        "headers" : {
+          "type" : "object",
+          "properties" : {
+            "x-customer-id" : {
+              "type" : "string",
+              "example" : "customerId123"
+            },
+            "x-customer-user-agent" : {
+              "type" : "string",
+              "example" : "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0"
+            },
+            "x-jws-signature" : {
+              "type" : "string",
+              "example" : "eyJiNjQiOmZhbHNlLCJ4NXQjUzI1NiI6IlJSTVVBN2Z0MkNuaFVWWEo4OWVCQW9ZRW4zRjcyZlJaZDVQc2hacmJVOG8iLCJjcml0IjpbInNpZ1QiLCJzaWdEIiwiYjY0Il0sInNpZ1QiOiIyMDI0LTAyLTE0VDEyOjE4OjQxWiIsInNpZ0QiOnsicGFycyI6WyIocmVxdWVzdC10YXJnZXQpIiwiaG9zdCIsIngtaW50ZXJhY3Rpb25zLWlkIiwieC1pZGVtcG90ZW5jeS1rZXkiLCJ4LWZpbmFuY2lhbC1pZCIsIngtYXV0aC1kYXRlIiwieC1jdXN0b21lci1pZCIsIngtY3VzdG9tZXItaXAtYWRkcmVzcyIsIngtY3VzdG9tZXItdXNlci1hZ2VudCIsImRpZ2VzdCJdLCJtSWQiOiJodHRwOi8vdXJpLmV0c2kub3JnLzE5MTgyL0h0dHBIZWFkZXJzIn0sImFsZyI6IlJTMjU2In0..lX6seir_gTuEZMObwI_XGIGonGNeO02ITGQAnzjWiIxHZ4-KXAujvy2x_NpDbXV2yiCK5lBmf8oHBiOBwZOoSx7DB1zHEpZcM4fxepk00iTJKeOoXlhblPz1M62nB8CYBB1JujSps9o97cVkkQN4FnfyXoDdXBpQ-Dsc4L90algPHMoHUiZNsOVNajOzrm-Pg-cAGFfAyPoBJLGpXi4TqjZul4gLbOB7d68VxEADm63SgZNEHdV8I9_qkkIFS8kLDgNG0Wq5dHg1dh21cknN5EXUj2p83X6_vQQMiJKT4wKaFV0fbY88mx4_hvxnqYQ_NhzLSFA5vm0ZYuJI7G6lgg"
+            },
+            "method" : {
+              "type" : "string",
+              "example" : "post"
+            },
+            "x-customer-ip-address" : {
+              "type" : "string",
+              "example" : "192.168.1.01"
+            },
+            "x-financial-id" : {
+              "type" : "string",
+              "example" : "financialId123"
+            },
+            "x-auth-date" : {
+              "type" : "string",
+              "example" : "Thu, 26 Oct 2023 10:26:00 GMT"
+            },
+            "digest" : {
+              "type" : "string",
+              "example" : "SHA-256=N6MXYiv7FvxLATkRHtT//OH2PzSBXCrE0nzDgK6icog="
+            },
+            "x-idempotency-key" : {
+              "type" : "string",
+              "example" : "idempotencyKey123"
+            },
+            "x-interactions-id" : {
+              "type" : "string",
+              "example" : "interactionsId123"
+            },
+            "url-path" : {
+              "type" : "string",
+              "example" : "/verifyJAdESBB"
+            }
+          }
+        }
+      }
+    },
+    "generateJAdESBB" : {
+      "type" : "object",
+      "properties" : {
+        "body" : {
+          "type" : "object",
+          "properties" : {
+            "name" : {
+              "type" : "string",
+              "example" : "saeed"
+            },
+            "company" : {
+              "type" : "string",
+              "example" : "jopacc"
+            },
+            "age" : {
+              "type" : "number",
+              "example" : 30.0
+            }
+          }
+        },
+        "headers" : {
+          "type" : "object",
+          "properties" : {
+            "x-customer-id" : {
+              "type" : "string",
+              "example" : "customerId123"
+            },
+            "x-customer-user-agent" : {
+              "type" : "string",
+              "example" : "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0"
+            },
+            "method" : {
+              "type" : "string",
+              "example" : "post"
+            },
+            "x-customer-ip-address" : {
+              "type" : "string",
+              "example" : "192.168.1.01"
+            },
+            "x-financial-id" : {
+              "type" : "string",
+              "example" : "financialId123"
+            },
+            "x-auth-date" : {
+              "type" : "string",
+              "example" : "Thu, 26 Oct 2023 10:26:00 GMT"
+            },
+            "x-idempotency-key" : {
+              "type" : "string",
+              "example" : "idempotencyKey123"
+            },
+            "x-interactions-id" : {
+              "type" : "string",
+              "example" : "interactionsId123"
+            },
+            "url-path" : {
+              "type" : "string",
+              "example" : "/verifyJAdESBB"
+            }
+          }
+        }
+      }
+    }
+  }
+}

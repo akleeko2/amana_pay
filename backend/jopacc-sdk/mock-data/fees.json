@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "feeId": "fee_cliq_001",
+      "serviceChannel": "mobileApp",
+      "service": "CLIQ.transfer.incoming",
+      "feeCategory": "default",
+      "fees": [
+        { "feeType": "commission", "feeAmount": { "amount": "0.000", "currency": "JOD" } }
+      ],
+      "applicableForInstitutions": [],
+      "additionalInformation": ["CliQ incoming transfers are free for the beneficiary"],
+      "lastModificationDateTime": "2026-01-01T10:00:00Z"
+    },
+    {
+      "feeId": "fee_cliq_002",
+      "serviceChannel": "mobileApp",
+      "service": "CLIQ.transfer.outgoing",
+      "feeCategory": "default",
+      "fees": [
+        { "feeType": "commission", "feeAmount": { "amount": "0.250", "currency": "JOD" } }
+      ],
+      "applicableForInstitutions": [],
+      "additionalInformation": ["Standard CliQ outgoing transfer fee"],
+      "lastModificationDateTime": "2026-01-01T10:00:00Z"
+    },
+    {
+      "feeId": "fee_atm_001",
+      "serviceChannel": "automatedTeller",
+      "service": "ATM.cashWithdrawal.localCurrency",
+      "feeCategory": "default",
+      "fees": [
+        { "feeType": "surcharges", "feeAmount": { "amount": "0.500", "currency": "JOD" } }
+      ],
+      "applicableForInstitutions": [{ "schema": "bicCode", "address": "ARABJOAX" }],
+      "additionalInformation": ["SST cash withdrawal surcharge"],
+      "lastModificationDateTime": "2026-01-01T10:00:00Z"
+    }
+  ]
+}

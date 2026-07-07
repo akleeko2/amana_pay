@@ -1,0 +1,460 @@
+#%RAML 0.8
+title: IBAN Confirmation
+version: v0.4.3
+baseUri: "https://jpcjofsdev.apigw-az-eu.webmethods.io/gateway/IBAN Confirmation/v0.4.3"
+protocols: [HTTPS]
+schemas: 
+    - 
+        dateTime: '{"type":"string","format":"date-time(YYYY-MM-DDTHH:mm:ssZ)","example":"2006-09-15T10:30:00Z"}'
+        routeComplexType: '{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}}'
+        balanceComplexType: '{"required":["balanceAmount","balancePosition"],"type":"object","properties":{"balanceAmount":{"type":"number","format":"float(4 decimals)","example":"25.001"},"balancePosition":{"type":"string","description":"indicates the position of the balance, if its either credit or debit","enum":["credit","debit"]}}}'
+        amountComplexType: '{"required":["amount","currency"],"type":"object","properties":{"amount":{"type":"number","format":"float(4 decimals)","example":"25.001"},"currency":{"type":"string","format":"ISO 4217","example":"JOD"}}}'
+        ibanConfirmation: |-
+                {"required":["match"],"type":"object","properties":{"accountOwner":{"type":"object","properties":{"accountHolderType":{"type":"string","format":"str","example":"individual"},"address":{"type":"object","properties":{"addresslines":{"type":"object","format":"string","example":"[\"Amman, Jordan\",\"Wadi Saqra\",\"Arar Street\"]"},"countryInfo":{"type":"object","properties":{"countryCode":{"type":"string","format":"ISO 3166-1 alpha-2","example":"JO"},"countryName":{"type":"string","example":"Jordan"}}}}},"name":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}}},"additionalInformation":{"type":"string","example":"JOPACC Notes list"},"currencies":{"type":"object","format":"string","example":"[\"JOD\",\"USD\"]"},"institutionBasicInfo":{"type":"object","properties":{"contact":{"type":"object","properties":{"email":{"type":"string","example":"+1 987-654-3210"},"phoneNumber":{"type":"string","format":"E.164","example":"+962761231234"}}},"institutionIdentification":{"type":"object","properties":{"address":{"type":"string","example":"JORDJOA0"},"schema":{"type":"string","example":"bicCode"}}},"institutionType":{"type":"string","format":"str","example":"BANK"},"name":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}}},"lockedForCredit":{"type":"boolean","example":"true"},"lockedForDebit":{"type":"boolean","example":"true"},"status":{"type":"string","format":"str","example":"active"}}}
+        error_notFound: '{"type":"object","properties":{"code":{"type":"string","example":"resource.notFound"},"desc":{"type":"string","example":"The requested resource could not be found"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.url.invalid.endpoint"},"desc":{"type":"string","example":"The requested endpoint is not valid. Please check the url and try again"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+        error_serviceUnavailable: '{"type":"object","properties":{"code":{"type":"string","example":"server.service.error"},"desc":{"type":"string","example":"The requested service is currently unavailable"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"server.service.maintenance"},"desc":{"type":"string","example":"The service is temporarily down for maintenance. Please try again later"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+        errorBody: '{"type":"object","properties":{"code":{"type":"string","description":"High-level error code","example":"path.subPath"},"desc":{"type":"string","description":"Descriptive message of the error","example":"High-level description of the error"},"errors":{"type":"array","description":"List of specific errors. Used to display multiple errors if more than one exist","items":{"type":"object","properties":{"code":{"type":"string","description":"Specific error code","example":"specificPath.specificSubPath"},"desc":{"type":"string","description":"Descriptive message of the specific error","example":"Specific description of this error object"}}}},"id":{"type":"string","description":"Unique identifier for the error response. Used for logging and tracking errors","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+        accountBasicInfoComplexType: '{"required":["accountId","mainRoute"],"type":"object","properties":{"accountId":{"type":"string","format":"str","example":"str123"},"mainRoute":{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}}}}'
+        links: '{"type":"object","properties":{"CAF":{"type":"object","properties":{"account":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}}}},"FI":{"type":"object","properties":{"FXs":{"type":"object","properties":{"href":{"type":"string","example":"/institution/FXs"},"method":{"type":"string","example":"GET"}}},"SSTs":{"type":"object","properties":{"href":{"type":"string","example":"/institution/SSTs"},"method":{"type":"string","example":"GET"}}},"branches":{"type":"object","properties":{"href":{"type":"string","example":"/institution/branches"},"method":{"type":"string","example":"GET"}}},"fees":{"type":"object","properties":{"href":{"type":"string","example":"/institution/fees"},"method":{"type":"string","example":"GET"}}},"offers":{"type":"object","properties":{"href":{"type":"string","example":"/institution/offers"},"method":{"type":"string","example":"GET"}}},"products":{"type":"object","properties":{"href":{"type":"string","example":"/institution/products"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}}}},"FXs":{"type":"object","properties":{"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/institution/FXs/{targetCurrency}"},"method":{"type":"string","example":"GET"}}}}},"OTP":{"type":"object","properties":{"account":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}}}},"SOSP":{"type":"object","properties":{"account":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"beneficiary":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/beneficiaries/{beneficiaryId}"},"method":{"type":"string","example":"GET"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/SOSPs/{SOSPId}"},"method":{"type":"string","example":"GET"}}}}},"SSTs":{"type":"object","properties":{"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/institution/SSTs/{sstId}"},"method":{"type":"string","example":"GET"}}}}},"accounts":{"type":"object","properties":{"CAF":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/CAF"},"method":{"type":"string","example":"POST"}}},"SOSPs":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/SOSPs"},"method":{"type":"string","example":"GET"}}},"balances":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/balances"},"method":{"type":"string","example":"GET"}}},"beneficiaries":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/beneficiaries"},"method":{"type":"string","example":"GET"}}},"branch":{"type":"object","properties":{"href":{"type":"string","example":"institution/branches/{branchId}"},"method":{"type":"string","example":"POST"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"offers":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/offers"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"transactions":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/transactions"},"method":{"type":"string","example":"GET"}}}}},"balances":{"type":"object","properties":{"account":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/balances"},"method":{"type":"string","example":"GET"}}}}},"beneficiaries":{"type":"object","properties":{"account":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/beneficiaries/{beneficiaryId}"},"method":{"type":"string","example":"GET"}}}}},"branches":{"type":"object","properties":{"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/institution/branches/{branchId}"},"method":{"type":"string","example":"GET"}}}}},"offers":{"type":"object","properties":{"account":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"product":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/products/{productId}"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/offers/{offerId}"},"method":{"type":"string","example":"GET"}}}}},"offersPublic":{"type":"object","properties":{"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"product":{"type":"object","properties":{"href":{"type":"string","example":"/institution/products/{productId}"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/institution/offers/{offerId}"},"method":{"type":"string","example":"GET"}}}}},"pagination":{"type":"object","properties":{"last":{"type":"object","properties":{"href":{"type":"string","example":"/{route}/{resource}?skip={X}&limit={Y}"},"method":{"type":"string","example":"GET"}},"description":"links to the last page of resource"},"next":{"type":"object","properties":{"href":{"type":"string","example":"/{route}/{resource}?skip={X}&limit={Y}"},"method":{"type":"string","example":"GET"}},"description":"links to the next page of resource"},"prev":{"type":"object","properties":{"href":{"type":"string","example":"/{route}/{resource}?skip={X}&limit={Y}"},"method":{"type":"string","example":"GET"}},"description":"links to the previous page of resource"}}},"transactions":{"type":"object","properties":{"FXs":{"type":"object","properties":{"href":{"type":"string","example":"/institution/FXs/{currency}"},"method":{"type":"string","example":"GET"}}},"account":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/transactions/{transactionId}"},"method":{"type":"string","example":"GET"}}}}}}}'
+        countryInfo: '{"type":"object","properties":{"countryCode":{"type":"string","format":"ISO 3166-1 alpha-2","example":"JO"},"countryName":{"type":"string","example":"Jordan"}}}'
+        email: '{"type":"string","example":"+1 987-654-3210"}'
+        error_notAcceptable: '{"type":"object","properties":{"code":{"type":"string","example":"http.headers.invalid"},"desc":{"type":"string","example":"The requested content cannot be served in the specified format"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.content.unsupportedFormat"},"desc":{"type":"string","example":"The requested format is not supported. Please specify a different format"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+        error_tooManyRequests: |-
+                {"required":["code","desc","id"],"type":"object","properties":{"code":{"type":"string","example":"rateLimit.exceeded"},"desc":{"type":"string","example":"The rate limit for requests has been exceeded"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"rateLimit.exceeded"},"desc":{"type":"string","example":"The maximum number of requests '500/min' has been reached. Try again in '53 seconds'"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}
+        routingsComplexType: '{"type":"array","items":{"type":"composed","properties":{"address":{"type":"object","example":"HSM"},"schema":{"type":"object","example":"CLIQ"}},"allOf":[{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}},{"type":"object"}]}}'
+        error_internalServerError: '{"type":"object","properties":{"code":{"type":"string","example":"server.error"},"desc":{"type":"string","example":"An internal server error occurred"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"server.error.database"},"desc":{"type":"string","example":"Error accessing the database. Please contact the development support team or try again later"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+        website: '{"type":"string","format":"URL Living Standard","example":"www.jopacc.com"}'
+        addressComplexType: |-
+                {"type":"object","properties":{"addresslines":{"type":"object","format":"string","example":"[\"Amman, Jordan\",\"Wadi Saqra\",\"Arar Street\"]"},"city":{"type":"string","example":"Amman"},"countryInfo":{"type":"object","properties":{"countryCode":{"type":"string","format":"ISO 3166-1 alpha-2","example":"JO"},"countryName":{"type":"string","example":"Jordan"}}},"location":{"type":"object","properties":{"latitude":{"type":"number","format":"float","example":"31.9504003"},"longitude":{"type":"number","format":"float","example":"35.8648691"}}},"moreInfo":{"type":"string","example":"textarea"},"phoneNumber":{"type":"string","format":"E.164","example":"+962761231234"},"postcode":{"type":"string","example":"11962"},"state":{"type":"string","example":"Capital"},"website":{"type":"string","format":"URL Living Standard","example":"www.jopacc.com"}}}
+        error_forbidden: '{"type":"object","properties":{"code":{"type":"string","example":"http.auth.forbidden"},"desc":{"type":"string","example":"Insufficient privileges. Access to the requested resource is forbidden"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.auth.role.insufficient"},"desc":{"type":"string","example":"You do not have the necessary permissions to access this resource"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+        accountOwnerComplexType: |-
+                {"type":"object","properties":{"accountHolderType":{"type":"string","format":"str","example":"individual"},"address":{"type":"object","properties":{"addresslines":{"type":"object","format":"string","example":"[\"Amman, Jordan\",\"Wadi Saqra\",\"Arar Street\"]"},"countryInfo":{"type":"object","properties":{"countryCode":{"type":"string","format":"ISO 3166-1 alpha-2","example":"JO"},"countryName":{"type":"string","example":"Jordan"}}}}},"name":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}}}
+        institutionBasicInfoComplexType: '{"required":["institutionIdentification","institutionType","name"],"type":"object","properties":{"institutionIdentification":{"type":"composed","properties":{"address":{"type":"string","example":"JORDJOA0"},"schema":{"type":"string","example":"bicCode"}},"allOf":[{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}},{"type":"object"}]},"institutionPhoneNumber":{"type":"string","format":"E.164","example":"+962761231234"},"institutionType":{"type":"string","format":"str","example":"BANK"},"name":{"type":"composed","properties":{"tradeName":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}},"allOf":[{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}},{"type":"object"}]}}}'
+        phoneNumber: '{"type":"string","format":"E.164","example":"+962761231234"}'
+        error_badRequest: '{"required":["code","desc","id"],"type":"object","properties":{"code":{"type":"string","example":"http.request.invalid"},"desc":{"type":"string","example":"Invalid request parameters"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.headers.invalid"},"desc":{"type":"string","example":"Required header x-interactions-id is missing"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+        nameComplexType: '{"type":"composed","properties":{"tradeName":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}},"allOf":[{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}},{"type":"object"}]}'
+        addresslines: |-
+                {"type":"object","format":"string","example":"[\"Amman, Jordan\",\"Wadi Saqra\",\"Arar Street\"]"}
+        name: '{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}'
+        location: '{"type":"object","properties":{"latitude":{"type":"number","format":"float","example":"31.9504003"},"longitude":{"type":"number","format":"float","example":"35.8648691"}}}'
+        error_unauthorized: |-
+                {"required":["code","desc","id"],"type":"object","properties":{"code":{"type":"string","example":"http.auth.invalid"},"desc":{"type":"string","example":"Invalid authentication credentials"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.auth.header.missing"},"desc":{"type":"string","example":"Authentication header is missing. Please include the 'Authorization' header in your request."}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}
+        branchBasicInfoComplexType: '{"required":["branchIdentification","name"],"type":"object","properties":{"branchIdentification":{"type":"composed","properties":{"address":{"type":"object","example":"0010"},"schema":{"type":"object","example":"branchCode"}},"allOf":[{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}},{"type":"object"}]},"contact":{"type":"object","properties":{"email":{"type":"string","example":"+1 987-654-3210"},"phoneNumber":{"type":"string","format":"E.164","example":"+962761231234"}}},"name":{"type":"composed","properties":{"tradeName":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}},"allOf":[{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}},{"type":"object"}]}}}'
+        contactComplexType: '{"type":"object","properties":{"email":{"type":"string","example":"+1 987-654-3210"},"phoneNumber":{"type":"string","format":"E.164","example":"+962761231234"}}}'
+        error_methodNotAllowed: '{"type":"object","properties":{"code":{"type":"string","example":"http.method.invalid"},"desc":{"type":"string","example":"The requested HTTP method is not allowed for this resource"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.method.invalid.patch"},"desc":{"type":"string","example":"PATCH method is not supported for this resource"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+        account: |-
+                {"required":["accountCurrency","accountId","accountStatus","accountType","branchBasicInfo","institutionBasicInfo","mainRoute","openingDate","sharedAccount"],"type":"object","properties":{"_links":{"type":"object","properties":{"CAF":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/CAF"},"method":{"type":"string","example":"POST"}}},"SOSPs":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/SOSPs"},"method":{"type":"string","example":"GET"}}},"balances":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/balances"},"method":{"type":"string","example":"GET"}}},"beneficiaries":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/beneficiaries"},"method":{"type":"string","example":"GET"}}},"branch":{"type":"object","properties":{"href":{"type":"string","example":"institution/branches/{branchId}"},"method":{"type":"string","example":"POST"}}},"institution":{"type":"object","properties":{"href":{"type":"string","example":"/institution"},"method":{"type":"string","example":"GET"}}},"offers":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/offers"},"method":{"type":"string","example":"GET"}}},"self":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}"},"method":{"type":"string","example":"GET"}}},"transactions":{"type":"object","properties":{"href":{"type":"string","example":"/accounts/{accountId}/transactions"},"method":{"type":"string","example":"GET"}}}}},"accountCurrency":{"type":"string","format":"ISO 4217","example":"JOD"},"accountHolderType":{"type":"string","format":"str","example":"individual"},"accountId":{"type":"string","format":"str","example":"str123"},"accountStatus":{"type":"string","format":"str","example":"active"},"accountType":{"type":"object","properties":{"code":{"type":"string","description":"account type code. defined as {main type}.{sub type}.{sub type}.. etc where types are seperated by a \".\"","format":"str","example":"CHK.BUS"},"name":{"type":"string","format":"str","example":"Business Checking Account"}}},"availableBalance":{"required":["balanceAmount","balancePosition"],"type":"object","properties":{"balanceAmount":{"type":"number","format":"float(4 decimals)","example":"25.001"},"balancePosition":{"type":"string","description":"indicates the position of the balance, if its either credit or debit","enum":["credit","debit"]}}},"branchBasicInfo":{"required":["branchIdentification","name"],"type":"object","properties":{"branchIdentification":{"type":"composed","properties":{"address":{"type":"object","example":"0010"},"schema":{"type":"object","example":"branchCode"}},"allOf":[{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}},{"type":"object"}]},"contact":{"type":"object","properties":{"email":{"type":"string","example":"+1 987-654-3210"},"phoneNumber":{"type":"string","format":"E.164","example":"+962761231234"}}},"name":{"type":"composed","properties":{"tradeName":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}},"allOf":[{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}},{"type":"object"}]}}},"custodian":{"type":"object","properties":{"accountBasicInfo":{"required":["accountId","mainRoute"],"type":"object","properties":{"accountId":{"type":"string","format":"str","example":"str123"},"mainRoute":{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}}}},"relationshipType":{"type":"string","format":"str","example":"FATHER"}}},"institutionBasicInfo":{"required":["institutionIdentification","institutionType","name"],"type":"object","properties":{"institutionIdentification":{"type":"composed","properties":{"address":{"type":"string","example":"JORDJOA0"},"schema":{"type":"string","example":"bicCode"}},"allOf":[{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}},{"type":"object"}]},"institutionPhoneNumber":{"type":"string","format":"E.164","example":"+962761231234"},"institutionType":{"type":"string","format":"str","example":"BANK"},"name":{"type":"composed","properties":{"tradeName":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}},"allOf":[{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}},{"type":"object"}]}}},"lastModificationDateTime":{"type":"string","format":"date-time(YYYY-MM-DDTHH:mm:ssZ)","example":"2006-09-15T10:30:00Z"},"lockedForCredit":{"type":"boolean","example":"true"},"lockedForDebit":{"type":"boolean","example":"true"},"mainRoute":{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}},"openingDate":{"type":"string","format":"date-time(YYYY-MM-DDTHH:mm:ssZ)","example":"2006-09-15T10:30:00Z"},"productId":{"type":"string","format":"str","example":"productId"},"routings":{"type":"array","items":{"type":"composed","properties":{"address":{"type":"object","example":"HSM"},"schema":{"type":"object","example":"CLIQ"}},"allOf":[{"required":["address","schema"],"type":"object","properties":{"address":{"type":"string","format":"str","example":"JO27CBJO0010000000000000000001"},"schema":{"type":"string","format":"str","example":"IBAN"}}},{"type":"object"}]}},"sharedAccount":{"type":"boolean","example":"false"}}}
+        error_unsupportedMediaType: |-
+                {"type":"object","properties":{"code":{"type":"string","example":"media.unsupportedEncoding"},"desc":{"type":"string","example":"The requested media encoding is not supported"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"media.unsupportedEncoding.appXml"},"desc":{"type":"string","example":"The requested format 'application/xml' is not supported"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}
+        currencies: |-
+                {"type":"object","format":"string","example":"[\"JOD\",\"USD\"]"}
+securitySchemes: 
+    - 
+        httpBasicAuth: 
+            type: Basic Authentication
+            describedBy: 
+                headers: 
+                    Authorization: 
+                        type: string
+                        required: false
+                        repeat: false
+        apiKey: 
+            type: x-apiKey
+            describedBy: 
+                headers: 
+                    Authorization: 
+                        type: string
+                        required: false
+                        repeat: false
+securedBy: 
+    - 
+        apiKey
+    - 
+        httpBasicAuth
+/institution/ibanConf: 
+    displayName: /institution/ibanConf
+    get: 
+        description: Confirm the holder of an IBAN by sending an IBAN and verification value. The response returns if the IBAN and UID sent match and if the account is active.
+        headers: 
+            Authorization: 
+                description: Authorization header in which the token is placed
+                type: string
+                required: true
+                repeat: false
+            accountId: 
+                description: Account identification of the inquired. Scheme decided by the accountType
+                type: string
+                required: true
+                repeat: false
+            x-jws-signature: 
+                description: JWS Signature, refer to security reference
+                type: string
+                required: true
+                repeat: false
+            x-financial-id: 
+                description: Unique id for the Financial Institution; BIC or Pseudo-BIC code of the sender
+                type: string
+                required: false
+                repeat: false
+            uidType: 
+                description: Unique Identifier's type of the inquired, such as National ID or Passport Number
+                type: string
+                required: true
+                repeat: false
+            x-auth-date: 
+                description: Date and time of the last authentication of the User by the TPP
+                type: string
+                required: false
+                repeat: false
+            accountType: 
+                description: Account type of the inquired
+                type: string
+                required: true
+                repeat: false
+            uidValue: 
+                description: Unique Identifier of the inquired. Scheme decided by the uidType
+                type: string
+                required: true
+                repeat: false
+            x-interactions-id: 
+                description: Unique id for the interaction, used in all request and responses that are related
+                type: string
+                required: true
+                repeat: false
+            x-idempotency-key: 
+                description: Unique id that is generated for each request and response. Used for tracking and to check for duplicate calls
+                type: string
+                required: true
+                repeat: false
+        responses: 
+            "200": 
+                description: successful
+                body: 
+                    application/json: 
+                        schema: |-
+                            {"required":["match"],"type":"object","properties":{"accountOwner":{"type":"object","properties":{"accountHolderType":{"type":"string","format":"str","example":"individual"},"address":{"type":"object","properties":{"addresslines":{"type":"object","format":"string","example":"[\"Amman, Jordan\",\"Wadi Saqra\",\"Arar Street\"]"},"countryInfo":{"type":"object","properties":{"countryCode":{"type":"string","format":"ISO 3166-1 alpha-2","example":"JO"},"countryName":{"type":"string","example":"Jordan"}}}}},"name":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}}},"additionalInformation":{"type":"string","example":"JOPACC Notes list"},"currencies":{"type":"object","format":"string","example":"[\"JOD\",\"USD\"]"},"institutionBasicInfo":{"type":"object","properties":{"contact":{"type":"object","properties":{"email":{"type":"string","example":"+1 987-654-3210"},"phoneNumber":{"type":"string","format":"E.164","example":"+962761231234"}}},"institutionIdentification":{"type":"object","properties":{"address":{"type":"string","example":"JORDJOA0"},"schema":{"type":"string","example":"bicCode"}}},"institutionType":{"type":"string","format":"str","example":"BANK"},"name":{"required":["enName"],"type":"object","properties":{"arName":{"type":"string","format":"str"},"enName":{"type":"string","format":"str"}}}}},"lockedForCredit":{"type":"boolean","example":"true"},"lockedForDebit":{"type":"boolean","example":"true"},"status":{"type":"string","format":"str","example":"active"}}}
+                        example: '{"status":"active","currencies":["JOD","USD"],"institutionBasicInfo":{"institutionType":"BANK","institutionIdentification":{"schema":"bicCode","address":"JORDJOA0"},"name":{"enName":"string","arName":"string"},"contact":{"email":"+1 987-654-3210","phoneNumber":"+962761231234"}},"lockedForCredit":true,"lockedForDebit":true,"accountOwner":{"name":{"enName":"string","arName":"string"},"accountHolderType":"individual","address":{"addressLines":["Amman, Jordan","Wadi Saqra","Arar Street"],"countryInfo":{"countryCode":"JO","countryName":"Jordan"}}},"additionalInformation":"JOPACC Notes list"}'
+            "400": 
+                description: "400 Bad Request"
+                body: 
+                    application/json: 
+                        schema: '{"required":["code","desc","id"],"type":"object","properties":{"code":{"type":"string","example":"http.request.invalid"},"desc":{"type":"string","example":"Invalid request parameters"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.headers.invalid"},"desc":{"type":"string","example":"Required header x-interactions-id is missing"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+                        example: '{"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"http.request.invalid","desc":"Invalid request parameters","errors":[{"code":"http.headers.invalid","desc":"Required header x-interactions-id is missing"}]}'
+            "401": 
+                description: "401 Unauthorized"
+                body: 
+                    application/json: 
+                        schema: |-
+                            {"required":["code","desc","id"],"type":"object","properties":{"code":{"type":"string","example":"http.auth.invalid"},"desc":{"type":"string","example":"Invalid authentication credentials"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.auth.header.missing"},"desc":{"type":"string","example":"Authentication header is missing. Please include the 'Authorization' header in your request."}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}
+                        example: |-
+                            {"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"http.auth.invalid","desc":"Invalid authentication credentials","errors":[{"code":"http.auth.header.missing","desc":"Authentication header is missing. Please include the 'Authorization' header in your request."}]}
+            "500": 
+                description: "500 Internal Service Error"
+                body: 
+                    application/json: 
+                        schema: '{"type":"object","properties":{"code":{"type":"string","example":"server.error"},"desc":{"type":"string","example":"An internal server error occurred"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"server.error.database"},"desc":{"type":"string","example":"Error accessing the database. Please contact the development support team or try again later"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+                        example: '{"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"server.error","desc":"An internal server error occurred","errors":[{"code":"server.error.database","desc":"Error accessing the database. Please contact the development support team or try again later"}]}'
+            "403": 
+                description: "403 Forbidden"
+                body: 
+                    application/json: 
+                        schema: '{"type":"object","properties":{"code":{"type":"string","example":"http.auth.forbidden"},"desc":{"type":"string","example":"Insufficient privileges. Access to the requested resource is forbidden"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.auth.role.insufficient"},"desc":{"type":"string","example":"You do not have the necessary permissions to access this resource"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+                        example: '{"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"http.auth.forbidden","desc":"Insufficient privileges. Access to the requested resource is forbidden","errors":[{"code":"http.auth.role.insufficient","desc":"You do not have the necessary permissions to access this resource"}]}'
+            "404": 
+                description: "404 Not Found"
+                body: 
+                    application/json: 
+                        schema: '{"type":"object","properties":{"code":{"type":"string","example":"resource.notFound"},"desc":{"type":"string","example":"The requested resource could not be found"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.url.invalid.endpoint"},"desc":{"type":"string","example":"The requested endpoint is not valid. Please check the url and try again"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+                        example: '{"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"resource.notFound","desc":"The requested resource could not be found","errors":[{"code":"http.url.invalid.endpoint","desc":"The requested endpoint is not valid. Please check the url and try again"}]}'
+            "415": 
+                description: "415 Unsupported Media Type"
+                body: 
+                    application/json: 
+                        schema: |-
+                            {"type":"object","properties":{"code":{"type":"string","example":"media.unsupportedEncoding"},"desc":{"type":"string","example":"The requested media encoding is not supported"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"media.unsupportedEncoding.appXml"},"desc":{"type":"string","example":"The requested format 'application/xml' is not supported"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}
+                        example: |-
+                            {"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"media.unsupportedEncoding","desc":"The requested media encoding is not supported","errors":[{"code":"media.unsupportedEncoding.appXml","desc":"The requested format 'application/xml' is not supported"}]}
+            "503": 
+                description: "503 Service Unavailable"
+                body: 
+                    application/json: 
+                        schema: '{"type":"object","properties":{"code":{"type":"string","example":"server.service.error"},"desc":{"type":"string","example":"The requested service is currently unavailable"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"server.service.maintenance"},"desc":{"type":"string","example":"The service is temporarily down for maintenance. Please try again later"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+                        example: '{"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"server.service.error","desc":"The requested service is currently unavailable","errors":[{"code":"server.service.maintenance","desc":"The service is temporarily down for maintenance. Please try again later"}]}'
+            "405": 
+                description: "405 Method Not Allowed"
+                body: 
+                    application/json: 
+                        schema: '{"type":"object","properties":{"code":{"type":"string","example":"http.method.invalid"},"desc":{"type":"string","example":"The requested HTTP method is not allowed for this resource"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.method.invalid.patch"},"desc":{"type":"string","example":"PATCH method is not supported for this resource"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+                        example: '{"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"http.method.invalid","desc":"The requested HTTP method is not allowed for this resource","errors":[{"code":"http.method.invalid.patch","desc":"PATCH method is not supported for this resource"}]}'
+            "406": 
+                description: "406 Not Acceptable"
+                body: 
+                    application/json: 
+                        schema: '{"type":"object","properties":{"code":{"type":"string","example":"http.headers.invalid"},"desc":{"type":"string","example":"The requested content cannot be served in the specified format"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"http.content.unsupportedFormat"},"desc":{"type":"string","example":"The requested format is not supported. Please specify a different format"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}'
+                        example: |-
+                            {"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"http.headers.invalid\"","desc":"The requested content cannot be served in the specified format","errors":[{"code":"http.content.unsupportedFormat","desc":"The requested format is not supported. Please specify a different format"}]}
+            "429": 
+                description: "429 Too Many Requests"
+                body: 
+                    application/json: 
+                        schema: |-
+                            {"required":["code","desc","id"],"type":"object","properties":{"code":{"type":"string","example":"rateLimit.exceeded"},"desc":{"type":"string","example":"The rate limit for requests has been exceeded"},"errors":{"type":"array","items":{"type":"object","properties":{"code":{"type":"string","example":"rateLimit.exceeded"},"desc":{"type":"string","example":"The maximum number of requests '500/min' has been reached. Try again in '53 seconds'"}}}},"id":{"type":"string","format":"UUIDv4","example":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f"}}}
+                        example: |-
+                            {"id":"2c8579d1-8ccb-49c1-b64d-ed2a5b357c8f","code":"rateLimit.exceeded","desc":"The rate limit for requests has been exceeded","errors":[{"code":"rateLimit.exceeded","desc":"The maximum number of requests '500/min' has been reached. Try again in '53 seconds'"}]}
+documentation: 
+    - 
+        title: API Description
+        content: |
+            This Service confirms the holder of an IBAN by sending an IBAN and verification value. The response returns if the IBAN and UID sent match and if the account is active and the full information needed to Initiate a payment which helps in reducing the rejection rate of payments on different systems
+            
+            
+            ![JOF1](https://www.jopacc.com/sites/default/files/2023-12/jpc-internal-jof-banner.png)
+            
+            ---
+            
+            **_This is the initial draft of the Jordan Open Finance specification_**
+            
+            The services in this Open API specification are Direct-Call Services (DCS). These services can be accessed by direct calls to the banks or by using an aggregator central hub such as JoPACC. However, the URLs and routes for these services are designed for direct-calls only.
+            
+            - For the Open API specification of the aggregated services, refer to the Aggregator Services specification.
+            
+            Services in Jordan Open Finance Specification (JOF) are divided into 4 categories based on their content and nature of consent.
+            
+            # **Account Information Services (AIS)**
+            This category covers services that are related to customers' financial accounts. This category has two sub-categories:
+            
+            1. **MY AIS**: Services that allow an account holder to view their own information. For a TPP to retrieve this information, they require the consent of the user.
+            
+            2. **Others AIS**: Services that enable a TPP to view the account information of a user who is not their customer and who hasn't initiated the request. These services require the user whose information is being retrieved to have consented, such as the IBAN Confirmation service.
+            
+            
+            An IBAN (International Bank Account Number) confirmation service is a tool used to verify the validity and ownership of an IBAN. This service checks that the IBAN is correctly formatted, valid according to international standards, and belongs to the intended account holder. Doing so helps prevent errors in transactions, ensures payments are sent to the correct accounts, and reduces the risk of fraud. This service is particularly useful in financial transactions, where the accuracy and security of bank account information are crucial.
+            
+            This service is related to the "Others AIS" sub-category 
+            
+            ### **Overview**
+            ---
+            
+            **IBAN Confirmation Service** confirms the holder of an IBAN by sending an IBAN and verification value. The response returns if the IBAN and UID sent match and if the account is active and the full information needed to Initiate a payment which helps in reducing the rejection rate of payments on different systems. Also minimizing the chance of sending a transfer to the incorrect recipient.
+            
+            #### **IBAN Confirmation Services** 
+            
+            **1. Get IBAN Confirmation verification**
+            
+            ### **Endpoint** 
+            ---
+            
+            ### **GET /institution/ibanConf**
+            
+            #### **Get IBAN Confirmation verification:** This service validates International Bank Account Numbers (IBANs) for accuracy and reliability in financial transactions.
+            
+            
+            |     | Resource          | Method | EndPoint                    |
+            | --- | ----------------- | ------ | --------------------------- |
+            | 1   | IBAN Confirmation | GET    | /institution/ibanConf       |
+            
+            ### **Parameters**
+            ---
+            The table below outlines the inputs or configurations required for invoking the service. 
+            
+            |     | ParameterName | Required/Optional | Description                                                                                                                                                                                                                                                                
+            | --- | ------------- | ----------------- |---------------------------------------------------------------------------------|
+            | 1   | accountType   | Required          | Account type of the inquired                                                    |  
+            | 2   | accountId     | Required          | Account identification of the inquired. Scheme decided by the accountType       |       
+            | 3   | uidType       | Required          | Unique Identifier's type of the inquired, such as National ID or Passport Number|   
+            | 4   | uidValue      | Required          | Unique Identifier of the inquired. Scheme decided by the uidType                |   
+            
+            ### **Headers**
+            ---
+            The table below lists the HTTP headers that can be included in requests to provide additional information or configuration. 
+            
+            |     | HeaderName            | Required/Optional | Description                                                                                                                                                                                           |
+            | --- | --------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+            | 1   | Authorization         | Required          | This header typically carries credentials, such as tokens or keys, allowing the server to authenticate the client's request and determine whether it has permission to access the requested resource. |
+            | 2   | x-interactions-id     | Required          | This header is not a standard HTTP header, but it is used as a unique id for the interaction, used in all requests and responses that are related                                                     |
+            | 3   | x-idempotency-key     | Required          | A unique identifier used to ensure idempotent API requests, preventing duplicate actions when the same request is made multiple times.                                                                |
+            | 4   | x-financial-id        | Optional          | A custom header potentially used in financial APIs to convey specific transaction or account identifiers.                                                                                             |
+            | 5   | x-jws-signature       | Required          | A custom header indicating the presence of a JSON Web Signature (JWS) for verifying the authenticity and integrity of API requests.                                                                   |
+            | 6   | x-auth-date           | Optional          | A custom header used to indicate the date and time of authentication in API requests for security and audit trail purposes.   |                                                                     
+            
+            #
+                
+            ## **UML Diagram**
+            ---
+            
+            ![JOF1](https://www.jopacc.com/sites/default/files/2024-05/iban_confirmation_couaum.png)
+            
+            
+            ### **Data Dictionary**
+            ---
+            The tables below represent the API service fields and serve as a comprehensive reference detailing the meaning, format, and usage of each field, ensuring a consistent understanding of the service. 
+            
+            ####
+            #### **Get IBAN Confirmation verification**
+            
+            
+            | #   | Name                   | Data Type           | JSON Path                     | Description                                                               |
+            | --- | ---------------------- | ------------------  | ----------------------------- | ------------------------------------------------------------------------- |
+            | 1   | getIbanConf            | N/A                 | N/A                           | Retrieves IBAN confirmation status and details.                           |
+            | 2   | iban confirmation      | N/A                 | N/A                           | Confirmation status of the IBAN.                                          |
+            | 3   | status                 | enum                | status                        | Status of the IBAN (e.g., active).                                        |
+            | 4   | currencies             | array               | currencies                    | Supported currencies for the IBAN.                                        |
+            | 5   | institutionBasicInfo   | object(ComplexType) | institutionBasicInfo          | Basic information about the banking institution.                          |
+            | 6   | lockedForCredit        | boolean             | lockedForCredit               | Indicates whether the IBAN is locked for credit.                          |
+            | 7   | lockedForDebit         | boolean             | lockedForDebit                | Indicates whether the IBAN is locked for debit.                           |
+            | 8   | accountOwner           | object(ComplexType) | accountOwner                  | Information about the owner of the IBAN.                                  |
+            | 9   | additionalInformation  | string              | additionalInformation         | Additional notes or information about the IBAN.                           |
+            
+            
+            ### **Complex Types Dictionary**
+            
+            ---
+            
+            The tables below represent a structured overview of composite data structures utilized within the API, detailing their constituent attributes and relationships.
+            
+            
+            #### **institutionBasicInfoComplexType** 
+            
+            |  Info.                 |                                                                                                              |
+            |------------------------|--------------------------------------------------------------------------------------------------------------| 
+            | **Description**        | A complex type containing basic information about an institution.                                            |     
+            | **Used in**            | institutionBasicInfo                                                                                         |
+            | **JSON Path**          | institutionBasicInfo                                                                                         |  
+            
+            #####
+            ##### **_institutionBasicInfoComplexType in details_** 
+            
+            | *  | **Field**               |  Data Type                | **JSON Path**                                                                           |   **Description**                                                        |
+            | ---|-------------------------|---------------------------|-----------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+            | 1  |institutionType          | enum                      | institutionBasicInfo.institutionType                                                    |The type or category of the institution                                   |                                                                   
+            | 2  |institutionIdentification| object                    | institutionBasicInfo.institutionIdentification                                          |Identification information associated with the institution.               |
+            | 2.1|schema                   | string                    | institutionBasicInfo.institutionIdentification.schema                                   |The schema or structure of institution identification.                    |
+            | 2.2|address                  | string                    | institutionBasicInfo.institutionIdentification.address                                  |The address associated with the institution.                              |
+            | 3  |name                     | object(ComplexType)       | institutionBasicInfo.name                                                               |The name or title of the institution.                                     | 
+            | 4  |contact                  | object(ComplexType)       | institutionBasicInfo.contact                                                            |The contact phone number of the institution.                              |
+            
+            #
+            ---
+            
+            
+            #### **routeComplexType** 
+            
+            |  Info.                 |                                                                                                              |
+            |------------------------|--------------------------------------------------------------------------------------------------------------| 
+            | **Description**        | A complex type representing the route information.                                                           |     
+            | **Used in**            | institutionBasicInfo.institutionIdentification                                                               |
+            | **JSON Path**          | institutionBasicInfo.institutionIdentification                                                               |  
+            
+            
+            #####
+            ##### **_routeComplexType in details_** 
+            
+            | *  | **Field**               |  Data Type                | **JSON Path**                                                                           |   **Description**                                                        |
+            | ---|-------------------------|---------------------------|-----------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+            | 1  |schema                   | string                    | institutionBasicInfo.institutionIdentification.schema                                   |The schema or structure of the route.                                     |
+            | 2  |address                  | string                    | dinstitutionBasicInfo.institutionIdentification.address                                 |The address associated with the route.                                    |
+            
+            
+            #
+            ---
+            
+            
+            #### **nameComplexType** 
+            
+            |  Info.                 |                                                                                                              |
+            |------------------------|--------------------------------------------------------------------------------------------------------------| 
+            | **Description**        | Specifies a complex type for name                                                                            |     
+            | **Used in**            | **1.** institutionBasicInfo.name                                                                              |
+            | **JSON Path**          | institutionBasicInfo.name                                                                                    |  
+                 
+            #####
+            ##### **_nameComplexType in details_** 
+                                                                                   
+            | *  | **Field**       |  Data Type                | **JSON Path**                                                                      |   **Description**                                                          |
+            | ---|-----------------|---------------------------|------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+            | 1  |enName           | string                    | institutionBasicInfo.name.enName                                                   |The institution English Name                                                |
+            |    |                 |                           | accountOwner.name.enName                                                           |The account Owner English Name                                              |
+            | 2  |arName           | string                    | institutionBasicInfo.name.arName                                                   |The institution Arabic Name                                                 |
+            |    |                 |                           | accountOwner.name.arName                                                           |The account Owner Arabic Name                                               |
+            | 3  |tradeName        | object                    | institutionBasicInfo.name.tradeName                                                |The institution trade or business name associated with a product or entity  |
+            | 3.1|enName           | string                    | institutionBasicInfo.name.tradeName.enName                                         |The institution English name of the trade or business.                      | 
+            | 3.2|arName           | string                    | institutionBasicInfo.name.tradeName.arName                                         |The institution Arabic name of the trade or business.                       |
+            
+            #
+            ---
+            
+            ####
+            #### **contactComplexType**
+            | Info.           |                                                                                                |
+            | --------------- | ---------------------------------------------------------------------------------------------- |
+            | **Description** | A complex type containing the contact information                                              |
+            | **Used in**     | institutionBasicInfo.contact                                                                   |
+            | **JSON Path**   | **1.** institutionBasicInfo.contact.email  **2.** institutionBasicInfo.contact.phonenNumber    |
+            
+            #####
+            ##### **_contactComplexType in details_**
+            | \*  | **Field**            | Data Type           | **JSON Path**                                       | **Description**                                        |
+            | --- | -------------------- | ------------------- | --------------------------------------------------- | ------------------------------------------------------ |
+            | 1   | email                | string              | institutionBasicInfo.contact.email                  | The email of the institution.                          |
+            | 2   | phoneNumber          | string              | institutionBasicInfo.contact.phonenNumber           | The phone number of the institution                    | 
+            
+            #
+            ---
+            
+            
+            ####
+            #### **accountOwnerComplexType**
+            | Info.           |                                                                                                |
+            | --------------- | ---------------------------------------------------------------------------------------------- |
+            | **Description** | A complex type containing the Account Owner information                                        |
+            | **Used in**     | accountOwner                                                                                   |
+            | **JSON Path**   | accountOwner                                                                                   |
+            
+            #####
+            ##### **_accountOwnerComplexType in details_**
+            | \*  | **Field**            | Data Type           | **JSON Path**                                       | **Description**                                        |
+            | --- | -------------------- | ------------------- | --------------------------------------------------- | ------------------------------------------------------ |
+            | 1   | name                 | object(ComplexType) | accountOwner.name                                   | The name of the account owner                          |
+            | 2   | accountHolderType    | string              | accountOwner.accountHolderType                      | The account holder type                                |
+            | 3   | address              | object(ComplexType) | accountOwner.accountHolderType                      | The address of the account owner                       |
+            
+             
+            #
+            ---
+            
+            
+            ####
+            #### **addressComplexType**
+            
+            | Info.           |                                                          |
+            | --------------- | -------------------------------------------------------- |
+            | **Description** | A complex type containing information about the address. |
+            | **Used in**     | accountOwner                                             |
+            | **JSON Path**   | accountOwner.address                                     |
+            
+            #####
+            
+            ##### **_addressComplexType in details_**
+            
+            | \*  | **Field**    | Data Type | **JSON Path**                                | **Description**                                |
+            | --- | ------------ | --------- | -------------------------------------------- | ---------------------------------------------- |
+            | 1   | addresslines | array     | accountOwner.address.addressLines            | The address lines of the account owner.        |
+            | 2   | city         | string    | accountOwner.address.city                    | The city of the account owner.                 |
+            | 3   | state        | string    | accountOwner.address.state                   | The state of the account owner.                |
+            | 4   | postcode     | string    | accountOwner.address.postcode                | The postcode of the account owner              |
+            | 5   | phoneNumber  | string    | accountOwner.address.phoneNumber             | The phone number of the account owner          |
+            | 6   | website      | string    | accountOwner.address.website                 | The website of the account owner               |
+            | 7   | moreInfo     | string    | accountOwner.address.moreInfo                | Additional information about the account owner |
+            | 8   | countryInfo  | object    | accountOwner.address.countryInfo             | The country information of the account owner   |
+            | 8.1 | countryCode  | object    | accountOwner.address.countryInfo.countryCode | The country code of the account owner          |
+            | 8.2 | countryName  | object    | accountOwner.address.countryInfo.countryName | The country name of the account owner          |
+            | 9   | location     | object    | accountOwner.address.location                | The location of the account owner              |
+            | 9.1 | latitude     | number    | accountOwner.address.location.latitude       | The latitude of the account owner              |
+            | 9.2 | longitude    | number    | accountOwner.address.location.longitude      | The longitude of the account owner             |
+            
+            The Central Bank of Jordan has classified Open Finance consent into Account Information consent and Payment Initiation consent. The above categories are based on the CBJ's classifications and divide them further for the user's convenience.
+            
+            Some useful links:
+            
+            - [About JoPACC](https://jopacc.com)
+              This header typically carries credentials, such as tokens or keys, allowing the server to authenticate the client's request and determine whether it has permission to access the requested resource.

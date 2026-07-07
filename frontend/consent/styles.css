@@ -1,0 +1,55 @@
+/* Amana Pay — Consent Screen (light, Stripe-style; built on shared/theme.css) */
+
+.cs-wrap { position: relative; z-index: 1; max-width: 430px; margin: 0 auto; min-height: 100vh; padding: 22px 16px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.cs-card { border-radius: var(--r-xl); padding: 26px 24px; box-shadow: var(--sh-lg); }
+
+.bank-head { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.bank-logo { width: 46px; height: 46px; border-radius: 13px; background: var(--brand-soft); border: 1px solid var(--info-bd); color: var(--brand); display: grid; place-items: center; }
+.bank-logo .icon svg { width: 24px; height: 24px; }
+.bh-meta { flex: 1; min-width: 0; }
+.bank-name { font-weight: 800; font-size: 17px; color: var(--ink); }
+.secure-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; background: var(--success-bg); color: var(--success); border: 1px solid var(--success-bd); padding: 6px 11px; border-radius: var(--r-pill); font-weight: 700; }
+.secure-badge .icon svg { width: 14px; height: 14px; }
+
+.state { animation: ap-reveal .4s var(--ease-out); }
+#state-loading, #state-success, #state-denied, #state-error { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+#state-loading .spinner { margin: 16px 0; }
+
+.ask { margin-bottom: 14px; font-size: 15px; color: var(--body); }
+.ask strong { color: var(--ink); }
+.perm-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 14px 0; }
+.perm-list li { display: flex; align-items: center; gap: 12px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; font-size: 14px; color: var(--ink); transition: border-color var(--t); }
+.perm-list li:hover { border-color: var(--line-2); }
+.perm-list .icon { color: var(--brand); } .perm-list .icon svg { width: 19px; height: 19px; }
+
+.info-rows { margin: 16px 0; }
+.info-row { display: flex; justify-content: space-between; padding: 11px 2px; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.info-row:last-child { border-bottom: none; }
+.info-row .k { color: var(--muted); }
+.info-row .v { font-weight: 700; color: var(--ink); }
+
+.actions { display: flex; gap: 10px; margin: 18px 0 12px; }
+.actions .btn { flex: 1; }
+
+.check { display: grid; place-items: center; margin: 8px 0; }
+.check svg { width: 84px; height: 84px; }
+.check circle { fill: none; stroke: var(--success); stroke-width: 3; stroke-dasharray: 151; stroke-dashoffset: 151; animation: ap-draw .5s var(--ease-out) forwards; }
+.check path { fill: none; stroke: var(--success); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 48; stroke-dashoffset: 48; animation: ap-draw .4s .45s var(--ease-out) forwards; }
+@keyframes ap-draw { to { stroke-dashoffset: 0; } }
+.ok-title { color: var(--success); }
+
+.status-ico { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; background: var(--danger-bg); color: var(--danger); }
+.status-ico .icon svg { width: 28px; height: 28px; }
+
+.cs-foot { text-align: center; font-size: 11.5px; color: var(--muted); }
+.cs-foot .row { justify-content: center; } .cs-foot .icon svg { width: 14px; height: 14px; }
+
+/* ====================== Responsive ====================== */
+.cs-wrap { min-height: 100dvh; }
+@media (max-width: 420px) {
+  .cs-wrap { padding: 16px 12px; }
+  .cs-card { padding: 22px 18px; border-radius: var(--r-lg); }
+  .actions { flex-direction: column-reverse; }
+  .actions .btn { width: 100%; }
+  .bank-name { font-size: 16px; }
+}

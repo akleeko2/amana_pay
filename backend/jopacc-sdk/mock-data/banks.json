@@ -1,0 +1,9 @@
+[
+  { "bic": "ARABJOAX", "name": { "en": "Arab Bank", "ar": "البنك العربي" }, "cliqSupported": true },
+  { "bic": "JONBJOAX", "name": { "en": "Bank of Jordan", "ar": "بنك الأردن" }, "cliqSupported": true },
+  { "bic": "UBSIJOAX", "name": { "en": "Jordan Islamic Bank", "ar": "البنك الإسلامي الأردني" }, "cliqSupported": true },
+  { "bic": "AHLIJOAX", "name": { "en": "Jordan Ahli Bank", "ar": "البنك الأهلي الأردني" }, "cliqSupported": true },
+  { "bic": "ETIHJOAX", "name": { "en": "Etihad Bank", "ar": "بنك الاتحاد" }, "cliqSupported": true },
+  { "bic": "CAPIJOAX", "name": { "en": "Capital Bank", "ar": "بنك المال" }, "cliqSupported": true },
+  { "bic": "HBHOJOAX", "name": { "en": "Housing Bank", "ar": "بنك الإسكان" }, "cliqSupported": true }
+]

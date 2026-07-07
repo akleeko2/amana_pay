@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb020"/>
+      <stop offset="1" stop-color="#ff6a3d"/>
+    </linearGradient>
+  </defs>
+  <!-- charger body -->
+  <rect x="130" y="120" width="140" height="140" rx="24" fill="#1b222c" stroke="#3a4656" stroke-width="3"/>
+  <!-- prongs -->
+  <rect x="168" y="90" width="14" height="34" rx="4" fill="#8b98a8"/>
+  <rect x="218" y="90" width="14" height="34" rx="4" fill="#8b98a8"/>
+  <!-- bolt -->
+  <path d="M212 150l-38 55h30l-14 55 52-70h-32z" fill="url(#g3)"/>
+  <!-- cable -->
+  <path d="M270 220q40 10 40 60" fill="none" stroke="#5f6b7a" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,205 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This service facilitates the encryption of plaintext data to ensure secure transmission and confidentiality of information, and also provides the ability to decrypt a JWE using default keys.\n\n#### **JSON Web Encryption (JWE)** represents encrypted content using JSON-based data structures [RFC7159]. The JWE cryptographic mechanisms encrypt and provide integrity protection for an arbitrary sequence of octets.\n\n#### There are two serializations for JWEs, and both share the same cryptographic underpinnings:\n   1. **JWE Compact Serialization** is a compact, URL-safe representation intended for space constrained environments such as HTTP Authorization headers and URI query parameters.\n   2. **JWE JSON Serialization** represents JWEs as JSON objects and   \n         enables the same content be encrypted to multiple parties. \n\n#### JWE represents encrypted content using JSON data structures and base64url encoding. These JSON data structures MAY contain whitespace and/or line breaks before or after any JSON values or structural characters.\n\n#### **JWE Components**\n- JOSE Header\n- JWE Encrypted Key\n- JWE Initialization Vector\n- JWE AAD\n- JWE Ciphertext\n- JWE Authentication Tag\n\nFor a  JWE, the **JOSE Header members** are the union of the members of these values\n- JWE Protected Header\n- JWE Shared Unprotected Header\n- JWE Per-Recipient Unprotected Header\n\nIn both serializations, the JWE Protected Header, JWE Encrypted Key, JWE Initialization Vector, JWE Ciphertext, and JWE Authentication Tag are base64url encoded, since JSON lacks a way to directly represent arbitrary octet sequences.  When present, the JWE AAD is also base64url encoded. \nJWE Compact Serialization\nIn the JWE Compact Serialization, no JWE Shared Unprotected Header or JWE Per-Recipient Unprotected Header are used.  In this case, the JOSE Header and the JWE Protected Header are the same.\n\n##### The JWE Compact Serialization represents encrypted content as a compact, URL-safe string.  This string is: \n - BASE64URL(UTF8(JWE Protected Header)) || '.' ||\n - BASE64URL(JWE Encrypted Key) || '.' ||\n - BASE64URL(JWE Initialization Vector) || '.' ||\n - BASE64URL(JWE Ciphertext) || '.' ||\n - BASE64URL(JWE Authentication Tag)\n\nOnly one recipient is supported by the JWE Compact Serialization and it provides no syntax to represent JWE Shared Unprotected Header, JWE Per-Recipient Unprotected Header, or JWE AAD values.\n\n#### **JWE JSON Serialization**\nIn the JWE JSON Serialization, one or more of the JWE Protected Header, JWE Shared Unprotected Header, and JWE Per-Recipient Unprotected Header MUST be present.  In this case, the members of the JOSE Header are the union of the members of the JWE Protected Header, JWE Shared Unprotected Header, and JWE Per-Recipient Unprotected Header values that are present.\n\n##### In the JWE JSON Serialization, a JWE is represented as a JSON object containing some or all of these eight members:\n\n- \"protected\", with the value BASE64URL(UTF8(JWE Protected Header))\n- \"unprotected\", with the value JWE Shared Unprotected Header\n- \"header\", with the value JWE Per-Recipient Unprotected Header\n- \"encrypted_key\", with the value BASE64URL(JWE Encrypted Key)\n- \"iv\", with the value BASE64URL(JWE Initialization Vector)\n- \"ciphertext\", with the value BASE64URL(JWE Ciphertext)\n- \"tag\", with the value BASE64URL(JWE Authentication Tag)\n- \"aad\", with the value BASE64URL(JWE AAD)\n\n##### Two closely related syntaxes are defined for the JWE JSON Serialization: \n- Fully General syntax, with which content can be encrypted to more than one recipient. \n- Flattened syntax, which is optimized for the single-recipient case.\n\n#### **General JWE JSON Serialization Syntax**\n##### The following members are defined for use in top-level JSON objects:\n- protected, unprotected, iv, aad, ciphertext, tag, recipients.\n##### The following members are defined for use in the JSON objects that are elements of the \"recipients\" array:\n- header, encrypted_key\n\n###### **Example**:\n- ##### {\"protected\":\"<integrity-protected shared header contents>\",\n  ##### \"unprotected\":<non-integrity-protected shared header contents>,\n  ##### \"recipients\": [\n  ##### {\"header\":<per-recipient unprotected header 1 contents>,\n  ##### \"encrypted_key\":\"<encrypted key 1 contents>\"},\n  ##### ...\n  ##### {\"header\":<per-recipient unprotected header N contents>,\n  ##### \"encrypted_key\":\"< encrypted key N contents >\"} ],\n  ##### \"aad\":\"< additional authenticated data contents >\",\n  ##### \"iv\":\"< initialization vector contents >\",\n  ##### \"ciphertext\":\"< ciphertext contents >\",\n  ##### \"tag\":\"< authentication tag contents >\" }\n\n#### **Flattened JWE JSON Serialization Syntax:**\n\nThe flattened Serialization syntax is based upon the general syntax, but flattens it, optimizing it for the single-recipient case. It flattens it by removing the \"recipients\" member and instead placing those members defined for use in the \"recipients\" array (the \"header\" and \"encrypted_key\" members) in the top-level JSON object (at the same level as the \"ciphertext\" member).\n\n###### **Example:**\n- ##### {\"protected\":\"<integrity-protected header contents>\",\n  ##### \"unprotected\":<non-integrity-protected header contents>,\n  ##### \"header\":< more non-integrity-protected header contents >,\n  ##### \"encrypted_key\":\"< encrypted key contents >\",\n  ##### \"aad\":\"< additional authenticated data contents >\",\n  ##### \"iv\":\"< initialization vector contents >\",\n  ##### \"ciphertext\":\"< ciphertext contents >\",\n  ##### \"tag\":\"< authentication tag contents >\" }\n\n#### **JOSE Header**\nFor a JWE, the members of the JSON object(s) representing the JOSE Header describe the encryption applied to the plaintext and optionally additional properties of the JWE. \nThere are three types of Header Parameters Names:\n  1. **Registered Header Parameter Names:**\n\n      The following Header Parameter names for use in JWEs are registered in the IANA \"JSON Web Signature and Encryption Header Parameters\" registry established by [JWS].\n      As indicated by the common registry, JWSs and JWEs share a common Header Parameter space; when a parameter is used by both specifications, its usage must be compatible between the specifications.\n      Examples: alg, enc, zip, jku, jwk, kid, x5u, x5c, x5t, x5t#S256, typ, cry, crit.\n  2. **Public Header Parameter Names:**\n\n      Additional Header Parameter names can be defined by those using JWEs. However, in order to prevent collisions, any new Header Parameter name should either be registered in the IANA \"JSON Web Signature and Encryption Header Parameters\" registry established by [JWS] or be a Public Name: a value that contains a Collision-Resistant Name.  In each case, the definer of the name or value needs to take reasonable precautions to make sure they are in control of the part of the namespace they use to define the Header Parameter name.\n      New Header Parameters should be introduced sparingly, as they can result in non-interoperable JWEs.\n  3. **Private Header Parameter Names:**\n\n      A producer and consumer of a JWE may agree to use Header Parameter names that are Private Names: names that are not Registered Header Parameter names or Public Header Parameter.  \n      Unlike Public Header Parameter names, Private Header Parameter names are subject to collision and should be used with caution.\n\n  #### **Message Encryption** \n  ##### To encrypt a message in JWE, you have 5 different modes to encrypt a content encryption key which is used to encrypt the payload.\n\n  - **Content Encryption Key (CEK):** A symmetric key for the AEAD algorithm used to encrypt the plaintext to produce the ciphertext and the Authentication Tag.\n\n  - **JWE Encrypted Key**: Encrypted Content Encryption Key value.  Note that for some algorithms, the JWE Encrypted Key value is specified as being the empty octet sequence.\n\n  #### **Key Management Mode**\n  ##### A method of determining the Content Encryption Key value to use. Each algorithm used for determining the CEK value uses a specific Key Management Mode.  Key Management Modes employed by JWE are:\n  1. **Key Encryption:**\n        A Key Management Mode in which the CEK value is encrypted to the intended recipient using an asymmetric encryption algorithm.\n\n  2. **Key Wrapping:**\n        A Key Management Mode in which the CEK value is encrypted to the intended recipient using a symmetric key wrapping algorithm.\n  3. **Direct Key Agreement:**\n        A Key Management Mode in which a key agreement algorithm is used to agree upon the CEK value.\n  4. **Key Agreement with Key Wrapping:**\n        A Key Management Mode in which a key agreement algorithm is used to agree upon a symmetric key used to encrypt the CEK value to the intended recipient using a symmetric key wrapping algorithm.\n  5. **Direct Encryption:**\n        A Key Management Mode in which the CEK value used is the secret symmetric key value shared between the parties.\n        - **You can refer to Figure 4.0 - Key Management Modes that is provided by JOPACC.**\n\nSome useful links:\n- [About JoPACC](https://jopacc.com)      \n",
+    "version" : "v3.0.1",
+    "title" : "JWE - JSON Web Encryption"
+  },
+  "host" : "jpcjofsdev.apigw-az-eu.webmethods.io",
+  "basePath" : "/gateway/JWE - JSON Web Encryption/v3.0.1",
+  "tags" : [ {
+    "name" : "JWS",
+    "description" : "JSON Web Encryption"
+  } ],
+  "schemes" : [ "https" ],
+  "security" : [ {
+    "apiKey" : [ ]
+  }, {
+    "httpBasicAuth" : [ ]
+  } ],
+  "paths" : {
+    "/generateJWE" : {
+      "post" : {
+        "tags" : [ "JWS" ],
+        "summary" : "geneate a JWE",
+        "description" : "post JWE",
+        "operationId" : "generateJWE",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/generateJWE"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "successful",
+            "schema" : {
+              "$ref" : "#/definitions/generateJWEResponse"
+            }
+          }
+        }
+      }
+    },
+    "/verifyJWE" : {
+      "post" : {
+        "tags" : [ "JWS" ],
+        "summary" : "verify a JWE",
+        "description" : "post JWE verification",
+        "operationId" : "verifyJWE",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/verifyJWE"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "successful",
+            "schema" : {
+              "$ref" : "#/definitions/jweVerificationResponse"
+            }
+          }
+        }
+      }
+    },
+    "/publicKey" : {
+      "get" : {
+        "tags" : [ "JWS" ],
+        "summary" : "get a public key",
+        "description" : "retrieve public key",
+        "operationId" : "getPublicKey",
+        "consumes" : [ ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful",
+            "schema" : {
+              "$ref" : "#/definitions/publicKey"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "httpBasicAuth" : {
+      "type" : "basic"
+    },
+    "apiKey" : {
+      "type" : "apiKey",
+      "name" : "x-Gateway-APIKey",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "verifyJWE" : {
+      "type" : "object",
+      "properties" : {
+        "jwe" : {
+          "type" : "string",
+          "format" : "str",
+          "example" : "eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0.jeAThLaNhxxgBKweKZ1Wg6OPeAZwGeN-FYAANXT1Rd5WNx7SeBRm5Bs8smcdSvTq4fg37uddl0KEjjvhJfS75iUeEmxpT4no1FX11k0OjBdRShwq9PBI0Kk5FIUiXT6TpGrSK5qUMNtCxsO0Ixh4CL1WjVpub6-cFDZaqvTswq10G_RguvnQYBjwBUZRD-3UCUhS6Xnd0c53APXuHAEET11lex3jjxf-sAja1EXEBx-gHpCmFXFQwH_BvvI_DszGVWTY1QE-9HpNaYRRhzY_ilcSKHcz9it0zvZyvF4sk-SkMDW0yCxO0i_SAYsSa9L30ceGwCj1hLkpxPr-mun-pA.4wHyuWhu3py_Tlzc.f30GcXLIDLEZawbg9wurlnjUf5WYfvR4zd8T0vi8_eD8DulpOW0_-zECIp3k2Q.ZBILaSgloYKDRh7iWUaPxQ"
+        }
+      }
+    },
+    "generateJWE" : {
+      "type" : "object",
+      "properties" : {
+        "age" : {
+          "type" : "number",
+          "format" : "float",
+          "example" : 29.0
+        },
+        "company" : {
+          "type" : "string",
+          "format" : "str",
+          "example" : "jopacc"
+        },
+        "name" : {
+          "type" : "string",
+          "format" : "str",
+          "example" : "Saeed"
+        }
+      }
+    },
+    "generateJWEResponse" : {
+      "type" : "object",
+      "properties" : {
+        "jwe" : {
+          "type" : "string",
+          "format" : "str",
+          "example" : "eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2R0NNIn0.gIEXbr4fCZzYuC6orHwhcPWa3gCkR8zUNK6s34XSrkiron1UeAmyijmJ_8VWQqID8XSxAau024BR8fHDMTN0OuXMN1Z2AV0IlJqPZSFPsKY8IRNG0y-Rw49-AEzTzuxfDCNyBipfmjsAkpi_I5QR1ph1WZVKG50896Qf3NeWOsO_SZN_epOLJDkB_yHPnslO13T5VsAUTAFFX_Q2eYKq_Sc_3OZxrdrXnIBTMxMtncSZfn3XzDhw2mhPzn6_DAvogQxxXxKZrVITmMgbXaHHJKcysc2Xazbv-RM2DdllydwGjYGEb5oRMpOwHMS-Z7I2wMehpMlSazwkG7Q2JMEN4A.zUYppMJIy76P2By6.UuZQtUfdUJU65HyWhQS40_7_cyWVje-NPbsN9yIDHLdIW6E3Qra2YtiIl7vMbw.ZYZrqSrFbcjVhvlrzXtP-A"
+        }
+      }
+    },
+    "publicKey" : {
+      "type" : "object",
+      "properties" : {
+        "certFingerprint" : {
+          "type" : "string",
+          "example" : "53:54:7E:DA:7F:1D:BB:AF:16:E3:B6:D0:27:10:D8:4C:46:A1:24:83"
+        },
+        "certSerialNumber" : {
+          "type" : "string",
+          "example" : "30C4188DF48C4C4A7B9E34B52CF4E4623970137A"
+        },
+        "publicKey" : {
+          "type" : "string",
+          "example" : "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUExSDN0MUdiZlhTS3JRVVNwMjhXSAp1OHp0NC9DOC80ZkVPOVFVbDNMM1dub0xTUjNrM1paTVMrSjE5alQxR0c0dkFSaFZKSmliYWE0MlNhbk1BbUdlCkFzZnhISFlONVVaalVlbk95TmljNVZDemw3aGtSVjhGN0c5K2d2ekJmZEZVUGpudmxFenV6R2ZaY1FMUVJPQVkKajIvRHozYWd2QmZod0hCK3ZGNFN1RGFiMWRlc09IQk4wSXBlUjNhOVBNSmNRUkNxZUdJNzlWdElXTENmV0xMTwphT29HeTZjd3EvS2g2NnBKTlo2M2RtTzZKREllWHFJVHZNU2pnUUZDMURjSGs0ZkpWR3N5MUNxQUQ2WE9XcDNJCkx6R2pJc2RJTzNjYWU0d2dRRkp1M0Z4OHA1UnlEZm5PTk9xQmExVDdkOWVwQVhMb2piTFROYWZsSm10cjh6WnIKc1FJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg=="
+        }
+      }
+    },
+    "jweVerificationResponse" : {
+      "type" : "object",
+      "properties" : {
+        "verifiedJWE" : {
+          "type" : "object",
+          "properties" : {
+            "payload" : {
+              "type" : "object",
+              "properties" : {
+                "name" : {
+                  "type" : "string",
+                  "format" : "str",
+                  "example" : "saeed"
+                },
+                "company" : {
+                  "type" : "string",
+                  "format" : "str",
+                  "example" : "jopacc"
+                },
+                "age" : {
+                  "type" : "number",
+                  "format" : "float",
+                  "example" : 29.0
+                }
+              }
+            },
+            "protectedHeader" : {
+              "type" : "object",
+              "properties" : {
+                "enc" : {
+                  "type" : "string",
+                  "format" : "str",
+                  "example" : "A256GCM"
+                },
+                "alg" : {
+                  "type" : "string",
+                  "format" : "str",
+                  "example" : "RSA-OAEP-256"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

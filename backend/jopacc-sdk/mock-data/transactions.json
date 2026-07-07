@@ -1,0 +1,14 @@
+[
+  {
+    "transactionId": "seed_txn_001",
+    "accountId": "acc_demo_001",
+    "amount": 45.0,
+    "currency": "JOD",
+    "reference": "INV-2026-0420",
+    "transactionType": "CliQ_CREDIT",
+    "status": "completed",
+    "debtor": { "name": "Sara Ahmad", "iban": "JO44CAPI3344000000000111222333", "bic": "CAPIJOAX" },
+    "creditor": { "name": "Downtown Computers", "iban": "JO94CBJO0010000000000131000302" },
+    "bankTimestamp": "2026-06-29T09:15:00Z"
+  }
+]

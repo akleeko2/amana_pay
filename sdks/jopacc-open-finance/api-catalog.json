@@ -1,0 +1,129 @@
+﻿{
+    "portal":  "https://jpcjofsdev.devportal-az-eu.webmethods.io/portal",
+    "totalApis":  12,
+    "downloadDate":  "2026-06-30 10:19:46",
+    "apis":  [
+                 {
+                     "attachments":  [
+                                         "Accounts_openapi.json",
+                                         "Accounts.raml"
+                                     ],
+                     "name":  "Accounts",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "f3139b5e-9401-4b0d-9d8b-a16701a669a7"
+                 },
+                 {
+                     "attachments":  [
+                                         "Balances_openapi.json",
+                                         "Balances.raml"
+                                     ],
+                     "name":  "Balances",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "f56eb5f9-d034-4f58-8e12-0488ad405fdc"
+                 },
+                 {
+                     "attachments":  [
+                                         "Beneficiaries_openapi.json",
+                                         "Beneficiaries.raml"
+                                     ],
+                     "name":  "Beneficiaries",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "568759b4-b690-42c7-9be9-779c7f88631e"
+                 },
+                 {
+                     "attachments":  [
+                                         "Branches.raml",
+                                         "Branches_openapi.json"
+                                     ],
+                     "name":  "Branches",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "5cfa4e80-dda3-44da-975d-977d0e678cf9"
+                 },
+                 {
+                     "attachments":  [
+                                         "ConfirmationofAvailabilityofFunds.raml",
+                                         "ConfirmationofAvailabilityofFunds_openapi.json"
+                                     ],
+                     "name":  "Confirmation of Availability of Funds",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "d9c4c655-9fc1-4ba0-9388-0a00913b376e"
+                 },
+                 {
+                     "attachments":  [
+                                         "Fees_openapi.json",
+                                         "Fees.raml"
+                                     ],
+                     "name":  "Fees",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "64e6f0fa-c99b-484e-b4ec-e4e1988216b1"
+                 },
+                 {
+                     "attachments":  [
+                                         "FinancialInstitutions.raml",
+                                         "FinancialInstitutions_openapi.json"
+                                     ],
+                     "name":  "Financial Institutions",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "89363c1b-4a2c-410f-8064-cd5a9215682d"
+                 },
+                 {
+                     "attachments":  [
+                                         "ForeignExchangeFX.raml",
+                                         "ForeignExchangeFX_openapi.json"
+                                     ],
+                     "name":  "Foreign Exchange (FX)",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "29e0c12c-ca35-4138-a289-c2eea74fb0b5"
+                 },
+                 {
+                     "attachments":  [
+                                         "IBANConfirmation.raml",
+                                         "IBANConfirmation_openapi.json"
+                                     ],
+                     "name":  "IBAN Confirmation",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "d5e809c0-4bd2-4b91-bbb7-7500a4dad059"
+                 },
+                 {
+                     "attachments":  [
+                                         "JAdESJSONAdvancedElectronicSignatureLevelBB_swagger.json",
+                                         "JAdESJSONAdvancedElectronicSignatureLevelBB.raml",
+                                         "JAdESJSONAdvancedElectronicSignatureLevelBB_openapi.json"
+                                     ],
+                     "name":  "JAdES - JSON Advanced Electronic Signature Level B-B",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "589032a0-035a-48fe-a6c0-4344b3f1001f"
+                 },
+                 {
+                     "attachments":  [
+                                         "JAdESJSONAdvancedElectronicSignatureLevelBB_openapi.json",
+                                         "JAdESJSONAdvancedElectronicSignatureLevelBB.raml"
+                                     ],
+                     "name":  "JAdES - JSON Advanced Electronic Signature Level B-B",
+                     "version":  "v0.4.3",
+                     "type":  "REST",
+                     "id":  "c9ab0359-340e-43e9-ae9e-c102d71713a8"
+                 },
+                 {
+                     "attachments":  [
+                                         "JWEJSONWebEncryption_openapi.json",
+                                         "JWEJSONWebEncryption.raml",
+                                         "JWEJSONWebEncryption_swagger.json"
+                                     ],
+                     "name":  "JWE - JSON Web Encryption",
+                     "version":  "v3.0.1",
+                     "type":  "REST",
+                     "id":  "87b25bed-81d5-4586-b317-48a0e1744f53"
+                 }
+             ]
+}

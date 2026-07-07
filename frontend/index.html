@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amana Pay — تأكيد دفعات CliQ تلقائياً عبر Open Finance</title>
+  <link rel="icon" type="image/png" href="./shared/favicon-64.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./shared/theme.css" />
+  <style>
+    .lp-hero-bg { position: absolute; inset: 0; height: 620px; z-index: 0; overflow: hidden;
+      background: var(--hero-grad); clip-path: polygon(0 0, 100% 0, 100% 72%, 0 100%); opacity: .98; }
+    .lp-hero-bg::after { content: ''; position: absolute; inset: 0; opacity: .25;
+      background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,.5) 0, transparent 35%), radial-gradient(circle at 80% 10%, rgba(255,255,255,.35) 0, transparent 30%); }
+    .lp-wrap { position: relative; z-index: 1; max-width: var(--container); margin: 0 auto; padding: 0 22px 70px; }
+
+    .lp-nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+    .lp-nav .ap-brand b, .lp-nav .links a { color: #fff; }
+    .lp-nav .links { display: flex; align-items: center; gap: 22px; }
+    .lp-nav .links a { text-decoration: none; font-size: 14.5px; font-weight: 600; opacity: .92; transition: opacity .2s; }
+    .lp-nav .links a:hover { opacity: 1; }
+    .lp-nav .lang-toggle { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.28); color: #fff; backdrop-filter: blur(6px); }
+
+    .hero { text-align: center; padding: 52px 0 40px; color: #fff; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 7px 15px; border-radius: var(--r-pill);
+      background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.26); color: #fff; font-size: 12.5px; font-weight: 600; margin-bottom: 22px; backdrop-filter: blur(6px); }
+    .eyebrow .pulse { width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0 rgba(255,255,255,.6); animation: ap-pulse 2s infinite; }
+    @keyframes ap-pulse { 70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+    .hero h1 { color: #fff; font-size: clamp(34px, 6vw, 58px); line-height: 1.08; margin-bottom: 18px; letter-spacing: -.03em; }
+    .hero p.lead { color: rgba(255,255,255,.92); font-size: clamp(15px, 2.2vw, 19px); max-width: 640px; margin: 0 auto 30px; line-height: 1.8; }
+    .hero .cta { display: flex; gap: 13px; justify-content: center; flex-wrap: wrap; }
+    .hero .cta .btn-ghost { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.3); color: #fff; box-shadow: none; }
+    .hero .cta .btn-ghost:hover { background: rgba(255,255,255,.22); }
+
+    /* receipt card */
+    .hero-visual { max-width: 430px; margin: 46px auto 0; }
+    .receipt { border-radius: var(--r-xl); padding: 24px; text-align: start; box-shadow: var(--sh-xl); }
+    .receipt .r-top { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+    .r-avatar { width: 44px; height: 44px; border-radius: 12px; background: var(--brand-grad); display: grid; place-items: center; color: #fff; box-shadow: var(--sh-brand); }
+    .r-avatar .icon svg { width: 22px; height: 22px; }
+    .r-amount { text-align: center; margin: 18px 0; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .r-amount .big { font-size: 42px; font-weight: 800; letter-spacing: -.03em; color: var(--ink); }
+    .r-amount .big small { font-size: 18px; color: var(--muted); }
+    .r-line { display: flex; justify-content: space-between; padding: 9px 0; font-size: 13.5px; }
+    .r-line .v { font-family: var(--font-num); color: var(--ink); font-weight: 600; }
+    .r-confirm { margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--success);
+      background: var(--success-bg); border: 1px solid var(--success-bd); border-radius: var(--r-md); padding: 11px; font-weight: 700; font-size: 14px; }
+    .r-confirm .icon svg { width: 18px; height: 18px; }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 54px 0; }
+    .stat { text-align: center; padding: 22px 14px; border-radius: var(--r-lg); }
+    .stat .n { font-size: 30px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+    .stat .l { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+    .sec-head { text-align: center; margin: 52px 0 28px; }
+    .sec-head h2 { font-size: clamp(24px, 4vw, 33px); margin-bottom: 10px; }
+    .sec-head p { color: var(--muted); font-size: 15px; }
+
+    .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+    .feat { border-radius: var(--r-lg); padding: 24px; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+    .feat.span3 { grid-column: span 3; } .feat.span2 { grid-column: span 2; }
+    .feat h3 { font-size: 18px; margin: 14px 0 8px; }
+    .feat p { color: var(--muted); font-size: 14px; line-height: 1.75; flex: 1; }
+    .feat .go { margin-top: 16px; color: var(--brand); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+    .feat .go .icon svg { width: 16px; height: 16px; }
+    body[dir='rtl'] .feat .go .icon { transform: scaleX(-1); }
+
+    .flow { border-radius: var(--r-xl); padding: 32px; margin-top: 16px; }
+    .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .step { text-align: center; position: relative; }
+    .step .dot { width: 42px; height: 42px; border-radius: 50%; margin: 0 auto 12px; display: grid; place-items: center;
+      background: var(--brand-soft); border: 1px solid var(--info-bd); color: var(--brand); font-weight: 800; font-family: var(--font-num); }
+    .step p { font-size: 13px; color: var(--body); line-height: 1.6; }
+    .step:not(:last-child)::after { content: ''; position: absolute; top: 21px; inset-inline-start: -50%; width: 100%; height: 2px; background: var(--line); z-index: -1; }
+
+    footer.lp-foot { text-align: center; color: var(--muted-2); font-size: 12.5px; margin-top: 54px; }
+
+    @media (max-width: 860px) {
+      .lp-hero-bg { height: 560px; }
+      .bento { grid-template-columns: 1fr; } .feat.span3, .feat.span2 { grid-column: span 1; }
+      .stats { grid-template-columns: repeat(2, 1fr); } .steps { grid-template-columns: 1fr 1fr; }
+      .step:not(:last-child)::after { display: none; }
+    }
+    @media (max-width: 520px) {
+      .lp-wrap { padding: 0 16px 60px; }
+      .lp-nav .links a[href="#how"] { display: none; }
+      .hero { padding: 40px 0 30px; }
+      .hero .cta { flex-direction: column; }
+      .hero .cta .btn { width: 100%; }
+      .flow { padding: 22px 18px; }
+      .stat .n { font-size: 26px; }
+    }
+  </style>
+</head>
+<body dir="rtl">
+  <div class="lp-hero-bg"></div>
+  <div class="lp-wrap">
+    <nav class="lp-nav">
+      <div class="ap-brand"><span class="ap-logo">AP</span><b>أمانة باي</b></div>
+      <div class="links">
+        <a href="#how">كيف يعمل</a>
+        <a href="./dashboard/index.html">لوحة التاجر</a>
+        <span class="lang-toggle" id="langToggle">EN</span>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <span class="eyebrow reveal"><span class="pulse"></span> مدعوم بـ JoPACC Open Finance</span>
+      <h1 class="reveal d1">تأكيد دفعات CliQ تلقائياً<br/>في ثوانٍ — لا سكرين شوت</h1>
+      <p class="lead reveal d2">يولّد أمانة باي مبلغاً ديناميكياً فريداً ويراقب حساب التاجر عبر Open Finance ليؤكّد الدفعة فوراً — دون أن تمرّ الأموال عبر المنصّة.</p>
+      <div class="cta reveal d3">
+        <a class="btn btn-ghost btn-lg" href="./dashboard/index.html">ابدأ كتاجر <span class="icon" data-icon="arrowLeft"></span></a>
+        <a class="btn btn-ghost btn-lg" href="#how">كيف يعمل</a>
+      </div>
+
+      <div class="hero-visual reveal d4">
+        <div class="receipt glass">
+          <div class="r-top">
+            <span class="r-avatar"><span class="icon" data-icon="store"></span></span>
+            <div style="flex:1"><div style="font-weight:700;color:var(--ink)">Downtown Computers</div><div class="muted sm">البنك العربي · CliQ</div></div>
+            <span class="badge VERIFIED">موثّق</span>
+          </div>
+          <div class="r-amount">
+            <div class="muted sm">المبلغ المطلوب</div>
+            <div class="big num">10.024 <small>JOD</small></div>
+          </div>
+          <div class="r-line"><span class="muted">اسم CliQ</span><span class="v">DOWNTOWN</span></div>
+          <div class="r-line"><span class="muted">المرجع</span><span class="v">AP-1024-X7K9</span></div>
+          <div class="r-confirm"><span class="icon" data-icon="checkCircle"></span> تم تأكيد الدفع تلقائياً</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="stat glass reveal"><div class="n num">~3s</div><div class="l">زمن التأكيد</div></div>
+      <div class="stat glass reveal d1"><div class="n num">100%</div><div class="l">دقة المطابقة</div></div>
+      <div class="stat glass reveal d2"><div class="n num">11</div><div class="l">خدمة Open Finance</div></div>
+      <div class="stat glass reveal d3"><div class="n num">0</div><div class="l">لمس للأموال</div></div>
+    </section>
+
+    <div class="sec-head" id="how"><h2>منصّة متكاملة</h2><p>كل ما تحتاجه لقبول وتأكيد دفعات CliQ باحترافية</p></div>
+    <section class="bento">
+      <a class="feat span3 glass glass-hover" href="./dashboard/index.html">
+        <span class="icon-box"><span class="icon" data-icon="store"></span></span>
+        <h3>لوحة تحكم التاجر</h3>
+        <p>سجّل تاجراً، اربط حسابك عبر Open Finance، أنشئ طلبات دفع، وتابع المطابقة والمعاملات والفوترة في لوحة واحدة.</p>
+        <span class="go">ابدأ كتاجر <span class="icon" data-icon="arrowLeft"></span></span>
+      </a>
+      <a class="feat span3 glass glass-hover" href="./dashboard/index.html">
+        <span class="icon-box"><span class="icon" data-icon="card"></span></span>
+        <h3>صفحة دفع احترافية</h3>
+        <p>تعليمات CliQ واضحة، مبلغ ديناميكي، نسخ بنقرة، مؤقت حيّ، ومساري Express / Verified بتجربة ثنائية اللغة.</p>
+        <span class="go">أنشئ طلب دفع <span class="icon" data-icon="arrowLeft"></span></span>
+      </a>
+      <div class="feat span2 glass">
+        <span class="icon-box"><span class="icon" data-icon="cpu"></span></span>
+        <h3>مطابقة ذكية</h3>
+        <p>محرك بوضعين (Balance-Only + Full) ومستويين، يطابق الدفعة بالطلب عبر عوامل متعددة أبرزها هوية المرسل.</p>
+      </div>
+      <div class="feat span2 glass">
+        <span class="icon-box"><span class="icon" data-icon="shieldCheck"></span></span>
+        <h3>أمان مصرفي</h3>
+        <p>توقيع JAdES RS256 وتشفير JWE، وموافقة AIS طويلة الأمد قابلة لإعادة الاستخدام عبر كل المتاجر.</p>
+      </div>
+      <div class="feat span2 glass">
+        <span class="icon-box"><span class="icon" data-icon="bolt"></span></span>
+        <h3>تأكيد فوري</h3>
+        <p>Webhook وتحديث حيّ عبر WebSocket لحظة تأكيد الدفعة — بلا مطابقة يدوية ولا انتظار.</p>
+      </div>
+    </section>
+
+    <div class="sec-head"><h2>كيف يعمل</h2><p>خمس خطوات من الطلب إلى التأكيد</p></div>
+    <section class="flow glass">
+      <div class="steps">
+        <div class="step"><div class="dot num">1</div><p>التاجر ينشئ طلب دفع بمبلغ فريد ومرجع</p></div>
+        <div class="step"><div class="dot num">2</div><p>العميل يدفع عبر CliQ مباشرة لحساب التاجر</p></div>
+        <div class="step"><div class="dot num">3</div><p>أمانة باي يراقب الحساب عبر Open Finance</p></div>
+        <div class="step"><div class="dot num">4</div><p>محرك المطابقة يطابق الدفعة بالطلب</p></div>
+        <div class="step"><div class="dot num">5</div><p>تأكيد فوري + Webhook للتاجر</p></div>
+      </div>
+      <div class="wrap-flex" style="justify-content:center; margin-top:26px">
+        <span class="chip">JAdES RS256</span>
+        <span class="chip">JWE RSA-OAEP-256</span>
+        <span class="chip">Balance-Only + Full</span>
+        <span class="chip">Express / Verified</span>
+        <span class="chip">مرخّص — البنك المركزي الأردني</span>
+      </div>
+    </section>
+
+    <footer class="lp-foot">Amana Pay — بروتوتايب يحاكي JoPACC Open Finance · الأموال لا تمرّ عبر المنصّة</footer>
+  </div>
+
+  <script src="./shared/icons.js"></script>
+  <script>
+    document.getElementById('langToggle').addEventListener('click', function () { location.href = './dashboard/index.html'; });
+  </script>
+</body>
+</html>

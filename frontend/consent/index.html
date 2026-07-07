@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open Finance — الموافقة على الوصول</title>
+  <link rel="icon" type="image/png" href="../shared/favicon-64.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shared/theme.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body dir="rtl">
+  <main class="cs-wrap">
+    <span class="lang-toggle" id="langToggle" style="align-self:flex-end">EN</span>
+
+    <section class="cs-card glass reveal d1" id="card">
+      <div class="bank-head">
+        <div class="bank-logo" id="bank-logo"><span class="icon" data-icon="bank"></span></div>
+        <div class="bh-meta">
+          <div class="bank-name" id="bank-name">البنك</div>
+          <div class="muted sm" id="of-tag">Open Finance</div>
+        </div>
+        <span class="secure-badge"><span class="icon" data-icon="lock"></span> <span id="secure-text">آمن</span></span>
+      </div>
+
+      <!-- الطلب -->
+      <div id="state-consent" class="state">
+        <p class="ask"><strong>أمانة باي</strong> <span id="ask-text">تطلب الوصول إلى حسابك:</span></p>
+        <ul class="perm-list">
+          <li><span class="icon" data-icon="user"></span><span id="perm-account">معلومات الحساب</span></li>
+          <li><span class="icon" data-icon="wallet"></span><span id="perm-balance">الأرصدة</span></li>
+          <li><span class="icon" data-icon="swap"></span><span id="perm-tx">المعاملات</span></li>
+        </ul>
+        <div class="info-rows">
+          <div class="info-row"><span class="k" id="lbl-account">الحساب</span><span class="v num" id="val-account">—</span></div>
+          <div class="info-row"><span class="k" id="lbl-validity">مدة الصلاحية</span><span class="v" id="val-validity">90 يوماً</span></div>
+          <div class="info-row"><span class="k" id="lbl-reuse">إعادة الاستخدام</span><span class="v" id="val-reuse">عبر كل المتاجر</span></div>
+        </div>
+        <div class="actions">
+          <button id="deny-btn" class="btn btn-ghost" type="button">رفض</button>
+          <button id="approve-btn" class="btn btn-primary" type="button">موافقة</button>
+        </div>
+        <p class="muted tiny center" id="cbj-note">هذه الخدمة مرخّصة من البنك المركزي الأردني وتتوافق مع معايير Open Finance.</p>
+      </div>
+
+      <!-- جارٍ -->
+      <div id="state-loading" class="state hidden">
+        <div class="spinner"></div>
+        <p class="muted" id="processing-text">جارٍ المعالجة…</p>
+      </div>
+
+      <!-- نجاح -->
+      <div id="state-success" class="state hidden">
+        <div class="check"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-16"/></svg></div>
+        <h2 class="ok-title" id="success-title">تم ربط حسابك</h2>
+        <p class="muted" id="success-sub">يمكنك العودة لإتمام الدفع.</p>
+        <p class="muted tiny" id="redirect-note"></p>
+      </div>
+
+      <!-- رفض -->
+      <div id="state-denied" class="state hidden">
+        <div class="status-ico"><span class="icon" data-icon="x"></span></div>
+        <h2 id="denied-title">تم رفض الموافقة</h2>
+        <p class="muted" id="denied-sub">لن يتم الوصول لبياناتك.</p>
+      </div>
+
+      <!-- خطأ -->
+      <div id="state-error" class="state hidden">
+        <div class="status-ico"><span class="icon" data-icon="info"></span></div>
+        <p class="muted" id="error-text">رابط الموافقة غير صالح.</p>
+      </div>
+    </section>
+
+    <footer class="cs-foot"><span class="row"><span class="icon" data-icon="shieldCheck"></span> <span id="powered">مؤمّن عبر JoPACC Open Finance</span></span></footer>
+  </main>
+
+  <script src="../shared/icons.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "amana-pay-backend",
+  "version": "0.1.0",
+  "description": "Amana Pay — CliQ payment confirmation over JoPACC Open Finance (prototype backend)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "init-db": "node database/db.js --init",
+    "seed": "node database/seed.js",
+    "seed-demo": "node database/seed-demo.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "uuid": "^11.0.5",
+    "ws": "^8.18.0"
+  },
+  "license": "MIT"
+}

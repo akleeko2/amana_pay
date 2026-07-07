@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Amana Pay — لوحة التحكم</title>
+  <link rel="icon" type="image/png" href="../shared/favicon-64.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shared/theme.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body dir="rtl">
+  <!-- شاشة الدخول -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="ap-aurora"><i></i><i></i><i></i></div>
+    <div class="auth-card glass reveal d1">
+      <div class="ap-brand" style="justify-content:center; margin-bottom:8px"><span class="ap-logo">AP</span><b>أمانة باي</b></div>
+      <p class="muted center" data-i18n="authSub">لوحة تحكم التاجر</p>
+
+      <div id="auth-tabs" class="auth-tabs">
+        <button class="tab active" data-tab="login" data-i18n="login">دخول</button>
+        <button class="tab" data-tab="register" data-i18n="register">تسجيل تاجر</button>
+      </div>
+
+      <div id="tab-login" class="auth-form">
+        <div class="field">
+          <label class="label" data-i18n="apiKey">مفتاح API</label>
+          <input id="login-key" class="input num" type="text" placeholder="ak_..." />
+        </div>
+        <button id="login-btn" class="btn btn-primary btn-block" data-i18n="enter">دخول</button>
+        <p id="login-err" class="err"></p>
+      </div>
+
+      <div id="tab-register" class="auth-form hidden">
+        <div class="field"><label class="label" data-i18n="bizName">اسم النشاط</label><input id="reg-name" class="input" type="text" placeholder="Downtown Computers" /></div>
+        <div class="field"><label class="label" data-i18n="email">البريد الإلكتروني</label><input id="reg-email" class="input" type="email" placeholder="store@example.com" /></div>
+        <div class="field"><label class="label" data-i18n="lookupValue">معرّف الحساب (accountId / IBAN)</label><input id="reg-lookup" class="input num" type="text" placeholder="acc_demo_001" value="acc_demo_001" /></div>
+        <div class="field"><label class="label" data-i18n="lookupSchema">نوع المعرّف</label>
+          <select id="reg-schema" class="select">
+            <option value="accountId">accountId</option>
+            <option value="IBAN">IBAN</option>
+            <option value="CLIQ">CLIQ (استنتاجي)</option>
+          </select>
+        </div>
+        <button id="reg-btn" class="btn btn-primary btn-block" data-i18n="createAccount">إنشاء وربط الحساب</button>
+        <p id="reg-err" class="err"></p>
+        <div id="reg-key-box" class="keybox hidden">
+          <p class="muted sm" data-i18n="saveKey">احفظ مفتاح API (يظهر مرة واحدة):</p>
+          <code id="reg-key"></code>
+        </div>
+      </div>
+      <span id="auth-lang" class="lang-toggle" style="position:absolute; top:18px; inset-inline-end:18px">EN</span>
+    </div>
+  </div>
+
+  <!-- التطبيق -->
+  <div id="app" class="app hidden">
+    <!-- شريط علوي ثابت -->
+    <header class="topbar">
+      <div class="ap-brand"><span class="ap-logo">AP</span><b class="brand-name">أمانة باي</b></div>
+      <div class="topbar-right">
+        <div class="of-status" id="of-status">
+          <span class="dot-led" id="of-led"></span>
+          <span id="of-text" class="of-text" data-i18n="ofConnected">متصل بـ Open Finance</span>
+        </div>
+        <span id="app-lang" class="lang-toggle">EN</span>
+        <button id="logout-btn" class="btn btn-ghost btn-sm logout-btn"><span class="icon" data-icon="logout"></span><span class="logout-label" data-i18n="logout">خروج</span></button>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <!-- تنقّل جانبي (يصبح شريطاً سفلياً على الجوال) -->
+      <aside class="sidebar">
+        <nav class="nav">
+          <button class="nav-item active" data-page="overview"><span class="icon" data-icon="grid"></span><span class="nav-label" data-i18n="navOverview">نظرة عامة</span></button>
+          <button class="nav-item" data-page="payments"><span class="icon" data-icon="card"></span><span class="nav-label" data-i18n="navPayments">المدفوعات</span></button>
+          <button class="nav-item" data-page="transactions"><span class="icon" data-icon="swap"></span><span class="nav-label" data-i18n="navTx">المعاملات</span></button>
+          <button class="nav-item" data-page="billing"><span class="icon" data-icon="percent"></span><span class="nav-label" data-i18n="navBilling">الفوترة</span></button>
+          <button class="nav-item" data-page="settings"><span class="icon" data-icon="settings"></span><span class="nav-label" data-i18n="navSettings">الإعدادات</span></button>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header class="content-head reveal">
+          <div>
+            <h1 id="page-title" data-i18n="navOverview">نظرة عامة</h1>
+            <p class="muted sm" id="merchant-label">—</p>
+          </div>
+          <button class="btn btn-primary new-pay-top" id="new-pay-top"><span class="icon" data-icon="plus"></span><span data-i18n="btnNew">طلب دفع</span></button>
+        </header>
+        <section id="page-content" class="page-content"></section>
+      </main>
+    </div>
+  </div>
+
+  <!-- نافذة إنشاء طلب دفع -->
+  <div id="new-payment-modal" class="modal-overlay hidden">
+    <div class="modal glass">
+      <h3 data-i18n="newPayment">طلب دفع جديد</h3>
+      <div class="field" style="margin-top:16px"><label class="label" data-i18n="amount">المبلغ (JOD)</label><input id="np-amount" class="input num" type="number" step="0.001" min="0.001" placeholder="10.000" /></div>
+      <div class="field"><label class="label" data-i18n="orderId">رقم الطلب (اختياري)</label><input id="np-order" class="input" type="text" placeholder="ORD-1001" /></div>
+      <div class="field"><label class="label" data-i18n="customerPhone">هاتف العميل (اختياري)</label><input id="np-phone" class="input num" type="tel" placeholder="07XXXXXXXX" /></div>
+      <div id="np-fee-note" class="muted sm"></div>
+      <div class="modal-actions">
+        <button id="np-cancel" class="btn btn-ghost" data-i18n="cancel">إلغاء</button>
+        <button id="np-create" class="btn btn-primary" data-i18n="create">إنشاء</button>
+      </div>
+      <div id="np-result" class="keybox hidden"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="../shared/icons.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

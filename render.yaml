@@ -1,0 +1,54 @@
+# Render Blueprint — Amana Pay + Nova Gadgets store
+# ينشئ خدمتَين مجانيتَين على Render دفعة واحدة:
+#   1) amana-pay-backend  : البوابة (API + payment page + dashboard + WebSocket)
+#   2) nova-gadgets-store : المتجر التجريبي الذي يستهلك البوابة
+#
+# الاستخدام: ادفع المشروع إلى GitHub، ثم على Render:
+#   New +  →  Blueprint  →  اختر المستودع  →  Apply.
+services:
+  # ---------------------------------------------------------------------------
+  # 1) بوابة الدفع Amana Pay
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: amana-pay-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 24.11.1
+      - key: NODE_ENV
+        value: production
+      - key: JOPACC_MODE
+        value: mock
+      # PORT يوفّره Render تلقائياً؛ الخادم يقرأه من process.env.PORT
+
+  # ---------------------------------------------------------------------------
+  # 2) المتجر التجريبي Nova Gadgets
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: nova-gadgets-store
+    runtime: node
+    plan: free
+    rootDir: nova-gadgets-store
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 24.11.1
+      - key: NODE_ENV
+        value: production
+      # يُحقن تلقائياً عنوان البوابة (hostname) — config.js يضيف https:// عند اللزوم
+      - key: AMANA_PAY_URL
+        fromService:
+          type: web
+          name: amana-pay-backend
+          property: host
+      - key: STORE_ACCOUNT_ID
+        value: acc_demo_002
