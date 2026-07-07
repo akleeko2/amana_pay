@@ -34,11 +34,22 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'nova-gadgets-store' }));
 
-// معالج أخطاء بسيط
+// معالج أخطاء — يسجّل تفاصيل كافية لتشخيص فشل الاتصال بالبوابة في لوق السحابة
 app.use((err, _req, res, _next) => {
   // eslint-disable-next-line no-console
-  console.error('[nova-gadgets] error:', err.message);
-  res.status(err.status || 500).json({ error: err.message || 'internal_error' });
+  console.error(
+    '[nova-gadgets] error:',
+    err.message,
+    '| status:', err.status || '-',
+    '| amanaPayUrl:', config.amanaPayUrl,
+    '| data:', err.data ? JSON.stringify(err.data) : '-',
+    err.cause ? '| cause: ' + (err.cause.message || err.cause) : ''
+  );
+  res.status(err.status || 500).json({
+    error: err.message || 'internal_error',
+    amanaPayUrl: config.amanaPayUrl,
+    detail: err.data || null,
+  });
 });
 
 const server = http.createServer(app);

@@ -27,11 +27,12 @@ function errorHandler(err, req, res, _next) {
   };
   if (Array.isArray(err.errors) && err.errors.length) body.errors = err.errors;
 
-  // في وضع التطوير نُظهر تتبّع الخطأ لتسهيل التشخيص
-  if (config.server.nodeEnv !== 'production' && status >= 500) {
-    body.stack = err.stack;
+  // نُسجّل دائماً أخطاء الخادم (5xx) لتظهر في لوق السحابة، ونُظهر التتبّع بالرد
+  // في غير الإنتاج فقط.
+  if (status >= 500) {
     // eslint-disable-next-line no-console
-    console.error('[amana-pay] Unhandled error:', err);
+    console.error('[amana-pay] Unhandled error:', err && err.stack ? err.stack : err);
+    if (config.server.nodeEnv !== 'production') body.stack = err.stack;
   }
 
   res.status(status).json(body);
