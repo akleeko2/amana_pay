@@ -58,19 +58,14 @@ services:
         value: 24.11.1
       - key: NODE_ENV
         value: production
-      # يُحقن تلقائياً عنوان البوابة (hostname) — config.js يضيف https:// عند اللزوم
+      # عنوان البوابة الكامل صراحةً (fromService property:host يعطي اسم الخدمة فقط
+      # بدون .onrender.com فيفشل الـ DNS). عدّله لو اختلف رابط خدمة البوابة عندك.
       - key: AMANA_PAY_URL
-        fromService:
-          type: web
-          name: amana-pay-backend
-          property: host
+        value: https://amana-pay-backend.onrender.com
       - key: STORE_ACCOUNT_ID
         value: acc_demo_002
       - key: STORE_EMAIL
         value: store@novagadgets.jo
-      # نفس المفتاح الثابت للبوابة (يُنسخ تلقائياً) — يبقى المتجر والداش بورد متزامنين
+      # نفس المفتاح الثابت للبوابة — يبقى المتجر والداش بورد متزامنين
       - key: STORE_API_KEY
-        fromService:
-          type: web
-          name: amana-pay-backend
-          envVarKey: SEED_MERCHANT_API_KEY
+        value: ak_demo_novagadgets_2026

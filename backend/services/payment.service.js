@@ -61,7 +61,7 @@ function uniqueReference() {
  * @param {object} merchant - سجل التاجر
  * @param {object} p - { originalAmount, orderId?, customerPhone?, description?, tier? }
  */
-async function createPayment(merchant, { originalAmount, orderId, customerPhone, description } = {}) {
+async function createPayment(merchant, { originalAmount, orderId, customerPhone, description, returnUrl } = {}) {
   if (!(originalAmount > 0)) {
     const e = new Error('المبلغ يجب أن يكون أكبر من صفر');
     e.status = 400;
@@ -124,6 +124,7 @@ async function createPayment(merchant, { originalAmount, orderId, customerPhone,
     created_at: nowIso(),
     customer_name: identity.expected_debtor_name || null,
     description: description || null,
+    return_url: returnUrl || null,
   };
 
   db.insert('payment_requests', row);
@@ -193,6 +194,7 @@ function paymentPageView(p) {
     matchFactors: safeParse(p.match_factors, []),
     matchMode: p.match_mode,
     confidenceScore: p.confidence_score,
+    returnUrl: p.return_url || null,
   };
 }
 

@@ -51,6 +51,10 @@ function runMigrations(db) {
   if (columnMissing('merchants', 'plan')) {
     db.exec("ALTER TABLE merchants ADD COLUMN plan TEXT DEFAULT 'GROWTH'");
   }
+  // إضافة عمود رابط العودة للمتجر (لزر «عودة للمتجر» — يصمد عبر إعادة توجيه الموافقة)
+  if (columnMissing('payment_requests', 'return_url')) {
+    db.exec('ALTER TABLE payment_requests ADD COLUMN return_url TEXT');
+  }
 }
 
 function db() {

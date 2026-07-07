@@ -117,7 +117,8 @@ CREATE TABLE IF NOT EXISTS payment_requests (
     confirmed_at TEXT,
     created_at TEXT DEFAULT (datetime('now')),
     customer_name TEXT,
-    description TEXT
+    description TEXT,
+    return_url TEXT                       -- رابط العودة لمتجر التاجر (لزر «عودة للمتجر»)
 );
 
 CREATE INDEX IF NOT EXISTS idx_payments_merchant ON payment_requests(merchant_id);

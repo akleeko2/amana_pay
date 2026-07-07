@@ -111,12 +111,13 @@ router.post(
   '/payments',
   requireApiKey,
   wrap(async (req, res) => {
-    const { amount, originalAmount, orderId, customerPhone, description } = req.body || {};
+    const { amount, originalAmount, orderId, customerPhone, description, returnUrl } = req.body || {};
     const payment = await paymentService.createPayment(req.merchant, {
       originalAmount: Number(originalAmount ?? amount),
       orderId,
       customerPhone,
       description,
+      returnUrl,
     });
     res.status(201).json({ payment: paymentService.paymentPageView(payment) });
   })

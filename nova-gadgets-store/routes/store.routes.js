@@ -100,16 +100,19 @@ router.post(
 
     const order = cart.createOrder(cartId, { customerName, customerPhone });
 
+    // رابط العودة للمتجر — نمرّره للبوابة لتخزينه مع الدفعة (يصمد عبر إعادة توجيه الموافقة)
+    const returnUrl = `${req.protocol}://${req.get('host')}/order.html?orderId=${order.orderId}`;
+
     const payment = await amana.createPayment({
       amount: order.subtotal,
       orderId: order.orderId,
       customerPhone: customerPhone || undefined,
       description: `Nova Gadgets — ${order.lines.length} منتج`,
+      returnUrl,
     });
 
     cart.attachPayment(order.orderId, payment.id);
 
-    const returnUrl = `${req.protocol}://${req.get('host')}/order.html?orderId=${order.orderId}`;
     const paymentPageUrl = amana.paymentPageUrl(payment.id, returnUrl);
 
     res.status(201).json({

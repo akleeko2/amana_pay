@@ -36,6 +36,17 @@ git push -u origin main
 
 > `AMANA_PAY_URL` للمتجر يُحقن تلقائياً من البوابة عبر الـ Blueprint (`fromService`).
 
+## ⚠️ مهم: عنوان البوابة (AMANA_PAY_URL)
+المتجر يتصل بالبوابة عبر `AMANA_PAY_URL`. لا تعتمد على `fromService property: host`
+لأنه يعطي **اسم الخدمة فقط** (`amana-pay-backend`) بدون `.onrender.com` → يفشل الـ DNS
+(`ENOTFOUND`). لذلك في `render.yaml` نضع الرابط **الكامل** صراحةً:
+```
+AMANA_PAY_URL = https://amana-pay-backend.onrender.com
+```
+- تأكّد أنه يطابق رابط خدمة البوابة الفعلي (افتح صفحة البوابة على Render وانسخ الـ URL).
+- للتحقق: افتح `https://amana-pay-backend.onrender.com/health` → يجب أن يُرجع `{"status":"ok"}`.
+- إذا كان رابط بوابتك مختلفاً (لاحقة عشوائية)، عدّل القيمة في خدمة المتجر → Environment.
+
 ## ملاحظات مهمة للتجربة
 - **الباقة المجانية بتنام** بعد ~15 دقيقة خمول؛ أول طلب بعد النوم بياخد ~30–50 ثانية (cold start).
   - المتجر يعيد محاولة الاتصال بالبوابة تلقائياً عند الإقلاع (لا يتعطّل).

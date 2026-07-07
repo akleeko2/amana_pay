@@ -296,8 +296,9 @@
     });
     fireConfetti();
 
-    // زر العودة للمتجر (اختياري): يظهر فقط إذا مرّر المتجر ?return=<url>
-    const returnUrl = qs.get('return') || qs.get('returnUrl');
+    // زر العودة للمتجر: نعتمد أولاً على returnUrl المخزّن مع الدفعة (يصمد عبر إعادة
+    // توجيه الموافقة Verified حيث يُعاد بناء الرابط بدون ?return)، ثم على معامل الرابط.
+    const returnUrl = (payment && payment.returnUrl) || qs.get('return') || qs.get('returnUrl');
     const backBtn = $('return-store-btn');
     if (returnUrl && backBtn) {
       backBtn.href = returnUrl;

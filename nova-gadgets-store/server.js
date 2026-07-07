@@ -24,6 +24,7 @@ const storeRoutes = require('./routes/store.routes');
 
 const app = express();
 app.disable('x-powered-by');
+app.set('trust proxy', true); // خلف بروكسي Render: req.protocol = https لرابط العودة الصحيح
 app.use(express.json({ limit: '512kb' }));
 app.use(cookies);
 

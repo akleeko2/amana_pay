@@ -90,11 +90,11 @@ async function ensureApiKey() {
 }
 
 /** إنشاء طلب دفع حقيقي لدى Amana Pay مقابل طلب شراء في المتجر. */
-async function createPayment({ amount, orderId, customerPhone, description }) {
+async function createPayment({ amount, orderId, customerPhone, description, returnUrl }) {
   const key = await ensureApiKey();
   const { data } = await request('POST', '/payments', {
     apiKey: key,
-    body: { amount, orderId, customerPhone, description },
+    body: { amount, orderId, customerPhone, description, returnUrl },
   });
   return data.payment;
 }
